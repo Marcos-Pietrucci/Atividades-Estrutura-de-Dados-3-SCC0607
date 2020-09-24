@@ -37,7 +37,6 @@ int main()
     //A primeira linha contem lixo, contem apenas um indicativo
     fscanf(arq, "%s", nm); //Basicamente lê lixo
 
-    //while(fread(&id,sizeof(int) ,1,arq ) == 1) //!Por que não deu certo????
     while(fscanf(arq,"%d",&Nodo.id) != -1)
     {
         //Devo zerar a string Nome para nao termos problemas de terminacao
@@ -62,7 +61,7 @@ int main()
         if(Nodo.idade >= 18)
         {
             
-            if(indc != 0) //Significa que não foi acrescentado nenhum char no nome
+            if(indc != 0) //Significa que foram acrescentados char ao nome
             {
                 printf("O usuario %s eh de maior.\n", Nodo.nome);    
             }
