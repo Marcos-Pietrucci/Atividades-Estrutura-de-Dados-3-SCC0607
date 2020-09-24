@@ -7,7 +7,7 @@ CFLAGS=-I. -g -Wall
 #DEPS= prototipos.h	
 
 #OBJ= buscaRecursiva.o TAD_lista.o mergesort.o main.o 
-OBJ= Exercicio2.o #buscaRecursiva.o mergesort.o manipularFiles.o main.o 
+OBJ= Exercicio3.o #buscaRecursiva.o mergesort.o manipularFiles.o main.o 
 #vai ser o nome do executavel
 
 # rule for files ending in .o (.o file depends upon the .c version of the file and the .h files in the DEPS macro)
