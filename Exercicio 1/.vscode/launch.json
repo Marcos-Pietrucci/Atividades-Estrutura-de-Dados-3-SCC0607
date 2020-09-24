@@ -8,14 +8,13 @@
             "name": "(gdb) Iniciar",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/mnt/c/Users/marco/Google Drive/USP/Engenharia da Computação/4º Período/Estrutura de Dados 3/Exercícios/Atividades-Estrutura-de-Dados-3-SCC0607/Exercicio 1/prog.exe",
+            "program": "${workspaceFolder}/prog",
             "args": [],
-            "stopAtEntry": true,
-            "cwd": "/mnt/c/Users/marco/Google Drive/USP/Engenharia da Computação/4º Período/Estrutura de Dados 3/Exercícios/Atividades-Estrutura-de-Dados-3-SCC0607/Exercicio 1",
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "/usr/bin/gdb",
             "setupCommands": [
                 {
                     "description": "Habilitar a reformatação automática para gdb",

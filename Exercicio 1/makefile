@@ -4,19 +4,20 @@ CFLAGS=-I. -g -Wall
 
 #LIBS=-lm
 
-DEPS= prototipos.h	
+#DEPS= prototipos.h	
 
 #OBJ= buscaRecursiva.o TAD_lista.o mergesort.o main.o 
-OBJ= TAD_lista.o buscaRecursiva.o mergesort.o manipularFiles.o main.o 
-
+OBJ= Exercicio1.o #buscaRecursiva.o mergesort.o manipularFiles.o main.o 
+#vai ser o nome do executavel
 
 # rule for files ending in .o (.o file depends upon the .c version of the file and the .h files in the DEPS macro)
 
+#Aparentemente $@ significa o nome a funcao que foi chamada
 %.o: %.c $(DEPS)		
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-prog: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+all: $(OBJ)
+	$(CC) -o prog $^ $(CFLAGS) $(LIBS)
 
 .PHONY: run
 
@@ -26,7 +27,7 @@ run:
 .PHONY: clean
 
 clean:
-	rm -f *.o  
+	rm -f *.o prog  
 
 .PHONY: debug
 
