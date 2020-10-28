@@ -10,7 +10,6 @@ Pessoa p;
 
 void teste()
 {
-    printf();
 
 
 }
