@@ -3,9 +3,12 @@
 /* Header referente ao arquivo main */
 /* Contém as estruturas e funções comuns à todos os modos*/
 
+#ifndef MAIN_H
+#define MAIN_H
 #include<stdio.h>
 #include<string.h>
 
+//Nodo das pessoas
 typedef struct {
     char removido;
     int idPessoa;
@@ -14,44 +17,18 @@ typedef struct {
     char twitterPessoa[15];
 }Pessoa;
 
+//Nodo do index
 typedef struct {
     int removido;
     int RRN;
 }IndexPessoa;
 
+// Função que abre um arquivo cujo nome é "nome", extensão "ext" e modo "modo". Retorna um ponteiro
+FILE* le_arquivo(char *nome, char modo);
 
-/* RETORNO:   Ponteiro para este arquivo
-/* PARAMETRO: Nome do arquivo binário  */
-// Função que lê o arquivo binario cujo nome é "nome"
-FILE* le_entrada_binaria(char nome[30], char modo)
-{
-    FILE *arq;
 
-    arq = fopen(strcat(nome, ".bin"), &modo);
-
-    if(arq == NULL)
-    {
-        printf()"";
-        return NULL;
-    }
-
-    return arq;
-}
 // Função que verifica se o cabeçalho está consistente
-int teste_consistencia_cabecalho(FILE *arq)
-{
-    //Recebi uma cópia do ponteiro do arquivo
-    //Espero que manipulá-lo aqui não gere problemas
+int teste_consistencia_cabecalho(FILE *arq);
 
-    /***** Ler o registro de cabeçalho *******/
-    int valor;
-    fread(&valor, sizeof(int), 1, arq);
 
-    if(!valor)
-    {
-        printf("Falha no processamento do arquivo");
-        return 0;
-    }
-    else
-        return 1;
-}
+#endif
