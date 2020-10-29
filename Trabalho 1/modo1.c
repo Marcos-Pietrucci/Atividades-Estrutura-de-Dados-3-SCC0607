@@ -13,105 +13,174 @@
 void modo1()
 {
     //Já foi lido o valor inicial, continuar com a leitura
-    char arq_csv[15], arq_bin[15], index_bin[15];
+    char nome_arq_csv[15], nome_arq_bin[15], nome_index_bin[15];
 
-    le_entradas_modo1(arq_csv, arq_bin, index_bin);
+    le_entradas_modo1(nome_arq_csv, nome_arq_bin, nome_index_bin);
 
     //Le o arquivo CSV das entradas
-    FILE *arq = le_arquivo(arq_csv,'r');
-
-    if(arq == NULL)
+    FILE *pessoas_csv = le_arquivo(nome_arq_csv, "r");
+    FILE *pessoas_bin = le_arquivo(nome_arq_bin, "wb");
+    FILE *index_bin = le_arquivo(nome_index_bin, "wb");
+    if(pessoas_csv == NULL ||pessoas_bin == NULL || index_bin == NULL)
         return;
-  
-    //Proceder para a leitura do arquivo CSV
-    int num_pessoa = 0;
-    Pessoa *vetP = le_dados_csv(arq, &num_pessoa);
+    
+    //Iniciar a leitura e concomitante escrita dos dados
+    int num_pessoas = 0;
+    IndexPessoa *index = le_dados_csv(pessoas_csv, pessoas_bin, &num_pessoas);
 
+    fclose(pessoas_csv);
+    fclose(pessoas_bin);
 
+    //De posse do vetor de Index, devemos ordená-lo
+    ordena_index(index, num_pessoas);
+
+    //De posse do vetor de IndexPessoa ordenado, devemos escreve-lo
+    escreve_index(index_bin, index, num_pessoas);
+
+    for(int i = 0; i < num_pessoas ; i ++)
+    {
+        printf("\nTemos: %d | %d", (index[i]).idPessoa, (index[i]).RRN );
+    }
+    
+    
+    free(index);
 }
 
-void le_entradas_modo1(char *arq_csv, char *arq_bin, char *index_bin)
+void le_entradas_modo1(char *nome_arq_csv, char *nome_arq_bin, char *nome_index_bin)
 {
-    //Lê o espaço e o nome do arquvo a ser lido
+    //Lê todas as entradas
     char lixo; 
     scanf("%c",&lixo);
     fflush(stdin);
-    scanf("%s", arq_csv);
+    scanf("%s", nome_arq_csv);
     fflush(stdin);
     scanf("%c", &lixo);
     fflush(stdin);
-    scanf("%s", arq_bin);
+    scanf("%s", nome_arq_bin);
     fflush(stdin);
-    scanf("%s", index_bin);
+    scanf("%s", nome_index_bin);
 
 }
 
-Pessoa* le_dados_csv(FILE* arq, int *num_pessoas)
+//Lê os dados do csv, escreve no disco e retorna um vetor de index
+IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas)
 {
-    Pessoa *p = (Pessoa*) malloc(sizeof(Pessoa));
-    *num_pessoas = 0;
+    
+    //Escrita do registro de cabeçalho do pessoas_bin
+    int i;
+    char status = '0';
+    fwrite(&status, sizeof(char), 1, pessoas_bin); //Arquivo inconsistente
+    fwrite(num_pessoas, sizeof(int), 1, pessoas_bin);
+    status = '$';
+    for(i = 0; i < 59; i++)
+        fwrite(&status, sizeof(char), 1, pessoas_bin);
 
+    //Vetor de index a ser retornado
+    IndexPessoa *index = malloc(sizeof(IndexPessoa));
+    *num_pessoas = -1;
+
+    /* Variáveis axuliares */
     Pessoa pAux;
-    int indc, flag = 0;
-
+    int indc;
     char lixo = (char) 0;
-    char str_id[2];
-    str_id[0] = 1;
-    str_id[1] = 1;
+    char str_lixo[50];
 
-    //Lê a primeira linha do arquivo, que contém dados invalidos
-    fscanf(arq, "%s", str_id);
-    fscanf(arq, "%c", &lixo);
+    //Lê a primeira linha do arquivo csv, que contém dados invalidos
+    fscanf(pessoas_csv, "%s", str_lixo);
+    fscanf(pessoas_csv, "%c", &lixo);
 
-    //Lê os dados
-    while(fread(str_id, sizeof(char), 2, arq) == 2)
+    //Lê os dados do arquivo iterativamente
+    while(fscanf(pessoas_csv, "%d", &pAux.idPessoa) != -1)
     {
-        //Li o id como um char
-        if(str_id[1] == ',')
-        {
-            str_id[1] = '\0';
-            flag = 1;
-        }
-        pAux.idPessoa = atoi(str_id);
-
-        //Lê uma virgula
-        if(!flag)     
-            fscanf(arq, "%c", &lixo);
-        else
-            flag = 0;
-        
+        //Lê uma virgula no arquivo
+        fscanf(pessoas_csv, "%c", &lixo);
+       
         //Lê o nome no arquivo
         indc = 0;
-        fscanf(arq, "%c", &lixo);
+        fscanf(pessoas_csv, "%c", &lixo);
         while(lixo != ',')
         { 
             pAux.nomePessoa[indc++] = lixo;
 
-            fscanf(arq, "%c", &lixo);    
+            fscanf(pessoas_csv, "%c", &lixo);    
         }
         pAux.nomePessoa[indc] = '\0';
         
         //Lê a idade no arquivo
-        fscanf(arq, "%d", &pAux.idadePessoa);
+        fscanf(pessoas_csv, "%d", &pAux.idadePessoa);
 
-        //Lê uma virgula
-        fscanf(arq, "%c", &lixo);
+        //Lê uma virgula no arquivo
+        fscanf(pessoas_csv, "%c", &lixo);
 
         //Lê o twitter no arquivo
         indc = 0;
-        fscanf(arq, "%c", &lixo);
-        while(lixo != '\n' && !feof(arq))
+        fscanf(pessoas_csv, "%c", &lixo);
+        while(lixo != '\n')
         { 
             pAux.twitterPessoa[indc++] = lixo;
-            if(!feof(arq))
-                fscanf(arq, "%c", &lixo);         
+            fscanf(pessoas_csv, "%c", &lixo);         
         }
         pAux.twitterPessoa[indc] = '\0';
 
-        printf("\nTemos: %d | %s | %d | %s", pAux.idPessoa, pAux.nomePessoa, pAux.idadePessoa, pAux.twitterPessoa);
+        //Preparar os dados do registro lido
+        prepara_structPessoa(&pAux); 
+
+        //Escreve o registro lidono disco
+        fwrite(&pAux.removido, sizeof(char), 1, pessoas_bin);
+        fwrite(&pAux.idPessoa, sizeof(int), 1, pessoas_bin);
+        fwrite(&pAux.nomePessoa, sizeof(char), 40, pessoas_bin);
+        fwrite(&pAux.idadePessoa, sizeof(int), 1, pessoas_bin);
+        fwrite(&pAux.twitterPessoa, sizeof(char), 15, pessoas_bin);
+
+        //Adicionar no vetor de index
+        (*num_pessoas)++;
+        index = realloc(index, sizeof(IndexPessoa)*((*num_pessoas) + 1));
+        index[*num_pessoas].idPessoa = pAux.idPessoa;
+        index[*num_pessoas].RRN = *num_pessoas;
     }
-    return p;
-    //while(fread(&Nodo.id, sizeof(int), 1, arq) != 0)
+    //Corrigir o valor do numero de pessoas
+    (*num_pessoas)++;
 
+    //Atualiza o registro de cabeçalho do pessoas_bin
+    status = '1';
+    fseek(pessoas_bin, 0, SEEK_SET);
+    fwrite(&status, sizeof(char), 1, pessoas_bin);  //Arquivo consistente
+    fwrite(num_pessoas, sizeof(int), 1, pessoas_bin);
+    status = '$';
+    for(i = 0; i < 59; i++)
+        fwrite(&status, sizeof(char), 1, pessoas_bin);
 
+    return index;
 }
+
+//Adiciona '$' devidamente na String
+void prepara_structPessoa(Pessoa *pAux)
+{    
+    int i, flag = 0;
+
+    //Valor padrão do removido
+    pAux->removido = '1'; 
+
+    for(i = 0;i < 15; i++)
+    {
+        //Ao ativar 'flag', escrever '$' no restante da string
+        if(flag)   
+            pAux->twitterPessoa[i] = '$';
+        //Ao encontrar o final da string, ativar 'flag'
+        else if(pAux->twitterPessoa[i] == '\0')
+            flag = 1;
+    }
+
+    flag = 0;
+    for(i = 0; i < 40; i++)
+    {
+        //Ao ativar 'flag', escrever '$' no restante da string
+        if(flag)    
+            pAux->nomePessoa[i] = '$';
+        //Ao encontrar o final da string, ativar 'flag'
+        else if(pAux->nomePessoa[i] == '\0')
+            flag = 1;
+    }
+}
+
+

@@ -14,8 +14,11 @@ Pessoa p;
 void modo1();
 
 //Função que lê as entradas do modo 1
-void le_entradas_modo1(char *arq_csv, char *arq_bin, char *index_bin);
+void le_entradas_modo1(char *nome_arq_csv, char *nome_arq_bin, char *nome_index_bin);
 
-//Função que lê os dados do arquivo CSV e retorna um vetor dinâmico com os dados
-Pessoa* le_dados_csv(FILE* arq, int *num_pessoas);
+//Função que lê os dados do arquivo CSV, escreve no disco e organiza o index
+IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas);
+
+//Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários
+void prepara_structPessoa(Pessoa *pAux);
 
