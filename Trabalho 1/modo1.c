@@ -131,7 +131,7 @@ IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas
         //Preparar os dados do registro lido
         prepara_structPessoa(&pAux); 
 
-        //Escreve o registro lidono disco
+        //Escreve o registro lido no disco
         fwrite(&pAux.removido, sizeof(char), 1, pessoas_bin);
         fwrite(&pAux.idPessoa, sizeof(int), 1, pessoas_bin);
         fwrite(&pAux.nomePessoa, sizeof(char), 40, pessoas_bin);

@@ -3,7 +3,7 @@
 //Função que inicia a leitura das entradas e o processamento do modo
 void modo2()
 {
-    //Já foi lido o valor inicial
+    //Continuar com a leitura
     char nome_arq_bin[15];
 
     //Lê a entrada
