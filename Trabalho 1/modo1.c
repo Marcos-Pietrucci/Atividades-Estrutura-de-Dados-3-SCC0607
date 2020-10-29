@@ -1,15 +1,15 @@
-#include"modo1.h"
 
+#include"modo1.h"
 #ifndef STDLIB_H
 #define STDLIB_H
 #include<stdlib.h>
 #endif
-#ifndef DECLARA_MAIN_MODO1
-#define DECLARA_MAIN_MODO1
-#include"main.h"
+#ifndef FORNECIDO_H_
+#include"fornecido.h"
+#define FORNECIDO_H_
 #endif
 
-
+//Função que inicia a leitura das entradas e o processamento do modo1
 void modo1()
 {
     //Já foi lido o valor inicial, continuar com a leitura
@@ -18,9 +18,9 @@ void modo1()
     le_entradas_modo1(nome_arq_csv, nome_arq_bin, nome_index_bin);
 
     //Le o arquivo CSV das entradas
-    FILE *pessoas_csv = le_arquivo(nome_arq_csv, "r");
-    FILE *pessoas_bin = le_arquivo(nome_arq_bin, "wb");
-    FILE *index_bin = le_arquivo(nome_index_bin, "wb");
+    FILE *pessoas_csv = le_arquivo(nome_arq_csv, "r", 1);
+    FILE *pessoas_bin = le_arquivo(nome_arq_bin, "wb", 1);
+    FILE *index_bin = le_arquivo(nome_index_bin, "wb", 1);
     if(pessoas_csv == NULL ||pessoas_bin == NULL || index_bin == NULL)
         return;
     
@@ -37,15 +37,14 @@ void modo1()
     //De posse do vetor de IndexPessoa ordenado, devemos escreve-lo
     escreve_index(index_bin, index, num_pessoas);
 
-    for(int i = 0; i < num_pessoas ; i ++)
-    {
-        printf("\nTemos: %d | %d", (index[i]).idPessoa, (index[i]).RRN );
-    }
-    
-    
+    fclose(index_bin);
     free(index);
+
+    binarioNaTela1(nome_arq_bin, nome_index_bin);
+
 }
 
+//Função que lê as entradas do modo 1
 void le_entradas_modo1(char *nome_arq_csv, char *nome_arq_bin, char *nome_index_bin)
 {
     //Lê todas as entradas
@@ -59,13 +58,11 @@ void le_entradas_modo1(char *nome_arq_csv, char *nome_arq_bin, char *nome_index_
     scanf("%s", nome_arq_bin);
     fflush(stdin);
     scanf("%s", nome_index_bin);
-
 }
 
-//Lê os dados do csv, escreve no disco e retorna um vetor de index
+//Função que lê os dados do arquivo CSV, escreve no disco e organiza o index. Retorna um ponteiro para um vetor de IndexPessoa
 IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas)
 {
-    
     //Escrita do registro de cabeçalho do pessoas_bin
     int i;
     char status = '0';
@@ -95,27 +92,36 @@ IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas
         //Lê uma virgula no arquivo
         fscanf(pessoas_csv, "%c", &lixo);
        
-        //Lê o nome no arquivo
+        /* ------------ Lê o nome no arquivo --------------*/
         indc = 0;
         fscanf(pessoas_csv, "%c", &lixo);
-        while(lixo != ',')
+        while(lixo != ',' && indc != 39)
         { 
             pAux.nomePessoa[indc++] = lixo;
-
-            fscanf(pessoas_csv, "%c", &lixo);    
+            fscanf(pessoas_csv, "%c", &lixo); 
         }
-        pAux.nomePessoa[indc] = '\0';
+        pAux.nomePessoa[indc] = '\0'; //Esse tratamento e a função "prepara_structPessoa" corrige o caso da entrada ser nula
         
+        //Caso tenha ocorrido truncamento no nome, continuar lendo lixo
+        if(indc == 39)
+            while(lixo != ',')
+                fscanf(pessoas_csv, "%c", &lixo);                                   
+        /*-----------------------------------*/
+
         //Lê a idade no arquivo
-        fscanf(pessoas_csv, "%d", &pAux.idadePessoa);
+        if(fscanf(pessoas_csv, "%d", &pAux.idadePessoa) == -1)
+        {
+            //Campo idade nulo
+            pAux.idadePessoa = -1;
+        }
 
         //Lê uma virgula no arquivo
         fscanf(pessoas_csv, "%c", &lixo);
 
-        //Lê o twitter no arquivo
+        /*--------- Lê o twitter no arquivo -------------*/
         indc = 0;
         fscanf(pessoas_csv, "%c", &lixo);
-        while(lixo != '\n')
+        while(lixo != '\n' && indc != 14)
         { 
             pAux.twitterPessoa[indc++] = lixo;
             fscanf(pessoas_csv, "%c", &lixo);         
@@ -146,14 +152,11 @@ IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas
     fseek(pessoas_bin, 0, SEEK_SET);
     fwrite(&status, sizeof(char), 1, pessoas_bin);  //Arquivo consistente
     fwrite(num_pessoas, sizeof(int), 1, pessoas_bin);
-    status = '$';
-    for(i = 0; i < 59; i++)
-        fwrite(&status, sizeof(char), 1, pessoas_bin);
 
     return index;
 }
 
-//Adiciona '$' devidamente na String
+//Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários e adicionando 'removido'
 void prepara_structPessoa(Pessoa *pAux)
 {    
     int i, flag = 0;
@@ -182,5 +185,3 @@ void prepara_structPessoa(Pessoa *pAux)
             flag = 1;
     }
 }
-
-

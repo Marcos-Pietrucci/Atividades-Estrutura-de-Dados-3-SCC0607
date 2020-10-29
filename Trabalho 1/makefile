@@ -4,10 +4,10 @@ CFLAGS=-I. -g -Wall
 
 #LIBS=-lm
 
-DEPS= main.h modo1.h fornecido.h	
+DEPS= *.h	
 
 #OBJ= buscaRecursiva.o TAD_lista.o mergesort.o main.o 
-OBJ= main.c modo1.c fornecido.c 
+OBJ= *.c 
 #So colocar aqui o nome do .c do seu programa
 
 #Aparentemente $@ significa o nome a funcao que foi chamada
