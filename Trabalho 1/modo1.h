@@ -14,6 +14,3 @@ void le_entradas_modo1(char *nome_arq_csv, char *nome_arq_bin, char *nome_index_
 
 //Função que lê os dados do arquivo CSV, escreve no disco e organiza o index
 IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas);
-
-//Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários e adicionando 'removido'
-void prepara_structPessoa(Pessoa *pAux);

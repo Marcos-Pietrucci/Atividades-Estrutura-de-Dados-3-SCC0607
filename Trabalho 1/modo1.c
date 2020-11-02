@@ -1,4 +1,3 @@
-
 #include"modo1.h"
 #ifndef STDLIB_H
 #define STDLIB_H
@@ -74,13 +73,16 @@ IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas
 
     //Vetor de index a ser retornado
     IndexPessoa *index = malloc(sizeof(IndexPessoa));
-    *num_pessoas = -1;
+    *num_pessoas = 0;
 
     /* Variáveis axuliares */
     Pessoa pAux;
     int indc;
     char lixo = (char) 0;
     char str_lixo[50];
+
+    //Valor padrão do removido
+    pAux.removido = '1';
 
     //Lê a primeira linha do arquivo csv, que contém dados invalidos
     fscanf(pessoas_csv, "%s", str_lixo);
@@ -139,14 +141,11 @@ IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas
         fwrite(&pAux.twitterPessoa, sizeof(char), 15, pessoas_bin);
 
         //Adicionar no vetor de index
-        (*num_pessoas)++;
         index = realloc(index, sizeof(IndexPessoa)*((*num_pessoas) + 1));
         index[*num_pessoas].idPessoa = pAux.idPessoa;
         index[*num_pessoas].RRN = *num_pessoas;
+        (*num_pessoas)++;
     }
-    //Corrigir o valor do numero de pessoas
-    (*num_pessoas)++;
-
     //Atualiza o registro de cabeçalho do pessoas_bin
     status = '1';
     fseek(pessoas_bin, 0, SEEK_SET);
@@ -154,34 +153,4 @@ IndexPessoa* le_dados_csv(FILE *pessoas_csv, FILE *pessoas_bin, int *num_pessoas
     fwrite(num_pessoas, sizeof(int), 1, pessoas_bin);
 
     return index;
-}
-
-//Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários e adicionando 'removido'
-void prepara_structPessoa(Pessoa *pAux)
-{    
-    int i, flag = 0;
-
-    //Valor padrão do removido
-    pAux->removido = '1'; 
-
-    for(i = 0;i < 15; i++)
-    {
-        //Ao ativar 'flag', escrever '$' no restante da string
-        if(flag)   
-            pAux->twitterPessoa[i] = '$';
-        //Ao encontrar o final da string, ativar 'flag'
-        else if(pAux->twitterPessoa[i] == '\0')
-            flag = 1;
-    }
-
-    flag = 0;
-    for(i = 0; i < 40; i++)
-    {
-        //Ao ativar 'flag', escrever '$' no restante da string
-        if(flag)    
-            pAux->nomePessoa[i] = '$';
-        //Ao encontrar o final da string, ativar 'flag'
-        else if(pAux->nomePessoa[i] == '\0')
-            flag = 1;
-    }
 }

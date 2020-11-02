@@ -3,7 +3,7 @@
 #include"main.h"
 #endif
 
-//Função que inicia a leitura das entradas e o processamento do modo
+//Função que inicia a leitura das entradas e o processamento do modo 3
 void modo3();
 
 //Função que lê as entradas do modo 3

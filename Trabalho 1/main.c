@@ -4,12 +4,13 @@
 #include"modo1.h"
 #include"modo2.h"
 #include"modo3.h"
+#include"modo4.h"
 #include<stdio.h>
 #include<stdlib.h>
 
 
 // Função que abre um arquivo com o "nome" e o "modo". Retorna um ponteiro para esse arquivo
-FILE* le_arquivo(char *nome, char *modo, int entrada)
+FILE* le_arquivo(char *nome, char *modo, int modo_entrada)
 {
     FILE *arq;
 
@@ -18,7 +19,7 @@ FILE* le_arquivo(char *nome, char *modo, int entrada)
     if(arq == NULL)
     {
         //A entrada 1 possui uma mensagem de erro diferente
-        if(entrada == 1)
+        if(modo_entrada == 1)
             printf("Falha no carregamento do arquivo.");
         else
             printf("Falha no processamento do arquivo.");
@@ -47,51 +48,34 @@ int teste_consistencia_cabecalho(FILE *arq)
         return 1;
 }
 
-//Função que ordena os registros do índice primário pelo idPessoa
-void ordena_index(IndexPessoa *index, int num_pessoas)
-{
-    //Será utilizado insertion sort para ordenar
-    int i, j;
-    IndexPessoa key;  
-    for (i = 1; i < num_pessoas; i++) 
-    {  
-        key = index[i];  
-        j = i - 1;  
-        while (j >= 0 && (index[j]).idPessoa >  key.idPessoa) 
-        {  
-            index[j + 1] = index[j];  
-            j = j - 1;  
-        }  
-        index[j + 1] = key;  
-    }  
-}
+//Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários
+void prepara_structPessoa(Pessoa *pAux)
+{    
+    int i, flag = 0;
 
-//Função que escreve um vetor de IndexPesoa no disco
-void escreve_index(FILE *index_bin, IndexPessoa *index, int num_pessoas)
-{
-    //Escrever o registro de cabeçalho
-    int i;
-    char status = '0';
-    fwrite(&status, sizeof(char), 1, index_bin); //Arquivo INCONSISTENTE
-    status = '$';
-    for(i = 0; i < 7; i++)
-        fwrite(&status, sizeof(char), 1, index_bin);
-
-    //Escreve todos os dados
-    i = 0;
-    while(i != num_pessoas)
+    for(i = 0;i < 15; i++)
     {
-        fwrite(&(index[i]).idPessoa, sizeof(int), 1, index_bin);
-        fwrite(&(index[i]).RRN, sizeof(int), 1, index_bin);
-        i++;
+        //Ao ativar 'flag', escrever '$' no restante da string
+        if(flag)   
+            pAux->twitterPessoa[i] = '$';
+        //Ao encontrar o final da string, ativar 'flag'
+        else if(pAux->twitterPessoa[i] == '\0')
+            flag = 1;
     }
 
-    //Atualiza o registro de cabeçalho
-    fseek(index_bin, 0, SEEK_SET);
-    status = '1';
-    fwrite(&status, sizeof(char), 1, index_bin); //Arquivo CONSISTENTE
+    flag = 0;
+    for(i = 0; i < 40; i++)
+    {
+        //Ao ativar 'flag', escrever '$' no restante da string
+        if(flag)    
+            pAux->nomePessoa[i] = '$';
+        //Ao encontrar o final da string, ativar 'flag'
+        else if(pAux->nomePessoa[i] == '\0')
+            flag = 1;
+    }
 }
 
+//Função que lê um vetor de IndexPesoa do disco. Carrega estes dados num vetor
 IndexPessoa* le_index(FILE *index_bin, int *num_pessoas)
 {
     //Variáveis axuliares
@@ -119,6 +103,52 @@ IndexPessoa* le_index(FILE *index_bin, int *num_pessoas)
     return index;
 }
 
+//Função que ordena os registros do índice primário pelo idPessoa
+void ordena_index(IndexPessoa *index, int num_pessoas)
+{
+    //Será utilizado insertion sort para ordenar
+    int i, j;
+    IndexPessoa key;  
+    for (i = 1; i < num_pessoas; i++) 
+    {  
+        key = index[i];  
+        j = i - 1;  
+        while (j >= 0 && (index[j]).idPessoa >  key.idPessoa) 
+        {  
+            index[j + 1] = index[j];  
+            j = j - 1;  
+        }  
+        index[j + 1] = key;  
+    }  
+}
+
+//Função que escreve um vetor de IndexPesoa no disco
+void escreve_index(FILE *index_bin, IndexPessoa *index, int num_pessoas)
+{   
+    //Escrever o registro de cabeçalho
+    int i;
+    char status = '0';
+    fwrite(&status, sizeof(char), 1, index_bin); //Arquivo INCONSISTENTE
+    status = '$';
+    for(i = 0; i < 7; i++)
+        fwrite(&status, sizeof(char), 1, index_bin);
+
+    //Escreve todos os dados
+    i = 0;
+    while(i != num_pessoas)
+    {
+        fwrite(&(index[i]).idPessoa, sizeof(int), 1, index_bin);
+        fwrite(&(index[i]).RRN, sizeof(int), 1, index_bin);
+        i++;
+    }
+
+    //Atualiza o registro de cabeçalho
+    fseek(index_bin, 0, SEEK_SET);
+    status = '1';
+    fwrite(&status, sizeof(char), 1, index_bin); //Arquivo CONSISTENTE
+}
+
+//Função que realiza uma busca binária no índice primário pelo RRN correspondente ao ID buscado
 int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa)
 {
     //Algoritmo da busca binária
@@ -143,6 +173,7 @@ int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa)
     return -1;
 }
 
+//Função que lê a Pessoa do arquvo cujo RRN é "RRN". Retorna uma estrutura com os dados da pessoa
 Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN)
 {
     //Variáveis auxiliares
@@ -201,6 +232,9 @@ int main()
                 break;
         
         case 3: modo3();
+                break;
+
+        case 4: modo4();
                 break;
 
         default: printf("Não implementado ainda :)");
