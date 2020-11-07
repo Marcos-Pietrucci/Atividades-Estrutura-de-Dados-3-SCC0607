@@ -26,7 +26,7 @@ typedef struct {
 
 /********** Funções usadas por 2 ou mais modos *********/
 
-// Função que abre um arquivo com o "nome" e o"modo". Retorna um ponteiro para esse arquivo
+//Função que abre um arquivo com o "nome" e o"modo". Retorna um ponteiro para esse arquivo
 FILE* le_arquivo(char *nome, char *modo, int modo_entrada);
 
 //Função que verifica se o cabeçalho está consistente

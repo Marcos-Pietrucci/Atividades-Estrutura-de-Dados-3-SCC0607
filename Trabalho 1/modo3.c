@@ -27,6 +27,9 @@ void modo3()
     //Inicia a busca pelo registro
     busca_registro(pessoas_bin, index_bin, nome_campo, PessoaBusca);
 
+    fclose(pessoas_bin);
+    fclose(index_bin);
+
 }
 
 Pessoa* le_entradas_modo3(char *nome_arq_bin, char *nome_index_bin, char *nome_campo)
