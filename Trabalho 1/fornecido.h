@@ -1,13 +1,9 @@
+/* Marcos Vinícus Firmino Pietrucci 10770072 */
 
-/* Este é o arquivo *.h */
-
-#ifndef FORNECIDO_H_
 #define FORNECIDO_H_
 
-	void binarioNaTela1(char *nomeArquivoBinario, char *nomeArquivoIndice); /* Correção do arquivo binário. */
-	void scan_quote_string(char *str, int len); /* Use para ler strings entre aspas. */
-	void trim(char *str); /* Pode ser útil pra você (extra). */
-
-#endif
+void binarioNaTela1(char *nomeArquivoBinario, char *nomeArquivoIndice); /* Correção do arquivo binário. */
+void scan_quote_string(char *str, int len); /* Use para ler strings entre aspas. */
+void trim(char *str); /* Pode ser útil pra você (extra). */
 
 

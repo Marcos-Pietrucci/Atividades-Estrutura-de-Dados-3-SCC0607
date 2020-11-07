@@ -1,3 +1,6 @@
+/* Marcos Vinícus Firmino Pietrucci 10770072 */
+
+/* Header referente ao modo 4 */
 #ifndef MAIN_H
 #define MAIN_H
 #include"main.h"

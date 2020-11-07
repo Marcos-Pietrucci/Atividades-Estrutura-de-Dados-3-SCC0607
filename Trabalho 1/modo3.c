@@ -1,3 +1,5 @@
+/* Marcos Vinícus Firmino Pietrucci 10770072 */
+
 #include"modo3.h"
 #ifndef STDLIB_H
 #define STDLIB_H

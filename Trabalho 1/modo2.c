@@ -1,3 +1,5 @@
+/* Marcos Vinícus Firmino Pietrucci 10770072 */
+
 #include"modo2.h"
 
 //Função que inicia a leitura das entradas e o processamento do modo

@@ -1,3 +1,4 @@
+# Marcos Vinícus Firmino Pietrucci 10770072
 CC=gcc					# C compiler
 
 CFLAGS=-I. -g -Wall
@@ -21,7 +22,7 @@ all: $(OBJ)
 
 run:
 	./prog
-
+#Os comandos abaixo não são utilizados
 .PHONY: clean
 
 clean:

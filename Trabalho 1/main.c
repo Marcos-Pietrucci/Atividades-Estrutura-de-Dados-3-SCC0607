@@ -1,5 +1,6 @@
-/* Marcos Vinícus Firmino Pietrucci 10770072*/
-/* Arquivo principal do trabalho, a partir do qual será ativada as funções*/
+/* Marcos Vinícus Firmino Pietrucci 10770072 */
+
+/* Arquivo principal do trabalho, a partir do qual será ativada as funcionalidades*/
 #include"main.h"
 #include"modo1.h"
 #include"modo2.h"
@@ -9,6 +10,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+/*** As funções abaixo são usadas por 2 ou mais modos diferentes  ***/
 
 // Função que abre um arquivo com o "nome" e o "modo". Retorna um ponteiro para esse arquivo
 FILE* le_arquivo(char *nome, char *modo, int modo_entrada)
