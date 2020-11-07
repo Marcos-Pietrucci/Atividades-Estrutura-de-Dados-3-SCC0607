@@ -31,13 +31,15 @@ Pessoa* le_entradas_modo3(char *nome_arq_bin, char *nome_index_bin, char *nome_c
 {
     Pessoa *pAux = malloc(sizeof(Pessoa));
 
-    //Adicionadno valores inválidos ao pAux
-    pAux->idadePessoa = -1;
-    pAux->idPessoa = -1;
-    pAux->nomePessoa[0] = '$';
-    pAux->nomePessoa[1] = '\0';
-    pAux->twitterPessoa[0] = '$';
-    pAux->twitterPessoa[1] = '\0';
+    //Adicionando valores inválidos ao pAux
+    pAux->idadePessoa = -2;
+    pAux->idPessoa = -2;
+
+    //Nenhuma pessoa tem este nome
+    strcpy(pAux->nomePessoa, "$$INVALIDO$$\0");
+
+    //Nenhuma pessoa tem este twitter
+    strcpy(pAux->twitterPessoa, "$$INVALIDO$$\0");
 
     //Lê todas as entradas
     char lixo; 
@@ -176,12 +178,12 @@ void busca_registro_indexada(FILE *pessoas_bin, FILE *index_bin, int idPessoa)
         return;
     
     //Realiza uma busca binária no índice primário
-    int RRN = busca_binaria_index(index, num_pessoas, idPessoa);
+    int RRN = busca_binaria_index(index, num_pessoas, idPessoa, 3);
     if(RRN == -1)
         return;
     
     //De posse do RRN, navegar pelo aquivo usando o RRN encontrado para exibir na tela
-    Pessoa pAux = busca_RRN_pessoa(pessoas_bin, RRN);
+    Pessoa pAux = busca_RRN_pessoa(pessoas_bin, RRN, 3);
     if(pAux.idPessoa == -1)
         return;
     else

@@ -18,14 +18,11 @@ void modo4()
 
     //Abre e testa a consistência dos arquivos
     FILE *pessoas_bin = le_arquivo(nome_arq_bin, "rb+", 4); //Aberto no modo rb+ para permitir escrita no começo do arquivo
-    if(pessoas_bin == NULL)
+    if(pessoas_bin == NULL || !teste_consistencia_cabecalho(pessoas_bin))
         return;
     FILE *index_bin = le_arquivo(nome_index_bin, "rb", 4); //Aberto no modo ab+ para permitir leitura e escrita no final do arquivo
-    if(index_bin == NULL)
+    if(index_bin == NULL || !teste_consistencia_cabecalho(index_bin))
         return;
-
-    //Retornar o ponteiro do index para o começo
-    fseek(index_bin, 0, SEEK_SET);
 
     //Ler as entradas iterativamente e inserir o arquivo adequado  
     int num_pessoas = 0;
@@ -40,7 +37,6 @@ void modo4()
     fclose(pessoas_bin);
     fclose(index_bin);
 
-    //Chama a binário na tela
     binarioNaTela1(nome_arq_bin,nome_index_bin);
 }
 
@@ -93,7 +89,7 @@ IndexPessoa* insere_pessoas_bin(FILE *pessoas_bin, FILE *index_bin, int n, int *
         fflush(stdin);
 
         //Lê a string do nome
-        scan_quote_string(substrsing);
+        scan_quote_string(substrsing, 40);
         if(substrsing[0] == '\0') //Caso o nome seja NULO
             pAux.nomePessoa[0] = '\0'; //Marcar para remoção do nome
         else
@@ -119,7 +115,7 @@ IndexPessoa* insere_pessoas_bin(FILE *pessoas_bin, FILE *index_bin, int n, int *
         fflush(stdin);
 
         //Lê o twitter da pessoa
-        scan_quote_string(substrsing);
+        scan_quote_string(substrsing, 15);
         substrsing[14] = '\0';  //Trucamento do twitter
         strcpy(pAux.twitterPessoa, substrsing);
         fflush(stdin);       

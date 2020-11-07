@@ -5,6 +5,7 @@
 #include"modo2.h"
 #include"modo3.h"
 #include"modo4.h"
+#include"modo5.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -18,7 +19,7 @@ FILE* le_arquivo(char *nome, char *modo, int modo_entrada)
 
     if(arq == NULL)
     {
-        //A entrada 1 possui uma mensagem de erro diferente
+        //A entrada 1 possui uma mensagem de erro diferente para o mesmo erro
         if(modo_entrada == 1)
             printf("Falha no carregamento do arquivo.");
         else
@@ -100,6 +101,9 @@ IndexPessoa* le_index(FILE *index_bin, int *num_pessoas)
     }
     (*num_pessoas)++;
 
+    //Volta o ponteiro para o início
+    fseek(index_bin, 0, SEEK_SET);
+
     return index;
 }
 
@@ -128,6 +132,7 @@ void escreve_index(FILE *index_bin, IndexPessoa *index, int num_pessoas)
     //Escrever o registro de cabeçalho
     int i;
     char status = '0';
+    fseek(index_bin, 0, SEEK_SET);
     fwrite(&status, sizeof(char), 1, index_bin); //Arquivo INCONSISTENTE
     status = '$';
     for(i = 0; i < 7; i++)
@@ -149,7 +154,7 @@ void escreve_index(FILE *index_bin, IndexPessoa *index, int num_pessoas)
 }
 
 //Função que realiza uma busca binária no índice primário pelo RRN correspondente ao ID buscado
-int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa)
+int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa, int modo_entrada)
 {
     //Algoritmo da busca binária
     int inf = 0;
@@ -168,19 +173,21 @@ int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa)
             inf = meio+1;
     }
 
-    //Não encontrou o registro com este ID
-    printf("Registro inexistente.");
+    //Apenas no modo 3 deve-se imprimir uma mensagem de erro
+    if(modo_entrada == 3)
+        printf("Registro inexistente.");
     return -1;
 }
 
 //Função que lê a Pessoa do arquvo cujo RRN é "RRN". Retorna uma estrutura com os dados da pessoa
-Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN)
+Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo_entrada)
 {
     //Variáveis auxiliares
     Pessoa pAux;
     char str_lixo[65];
     
     //Ler o registro de cabeçalho, que é lixo
+    fseek(pessoas_bin, 0, SEEK_SET);
     fread(str_lixo, sizeof(char), 64, pessoas_bin);
 
     //Posicionar o ponteiro na posição correta
@@ -190,7 +197,9 @@ Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN)
     fread(&pAux.removido, sizeof(char), 1, pessoas_bin);
     if(pAux.removido == '0')
     {
-        printf("Registro inexistente.");
+        //Apenas no modo 3 deve-se imprimir uma mensagem de erro
+        if(modo_entrada == 3)
+            printf("Registro inexistente.");
         pAux.idPessoa = -1;
     }
     else
@@ -213,6 +222,9 @@ Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN)
         //Lê o twitter no arquivo
         fread(&pAux.twitterPessoa, sizeof(char), 15, pessoas_bin);
     }
+
+    //Volta o ponteiro para o início
+    fseek(pessoas_bin, 0, SEEK_SET);
 
     return pAux;
 }
@@ -237,8 +249,8 @@ int main()
         case 4: modo4();
                 break;
 
-        default: printf("Não implementado ainda :)");
-                 break;
+        case 5: modo5();
+                break;
     }
 
     return 0;

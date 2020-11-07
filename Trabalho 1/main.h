@@ -4,6 +4,8 @@
 /* Contém as estruturas básicas do projeto */
 /* Contém funções que são usadas por 2 ou mais modos*/
 #define MAIN_H
+#define STDLIB_H
+#include<stdlib.h>
 #include<stdio.h>
 #include<string.h>
 
@@ -43,7 +45,7 @@ void ordena_index(IndexPessoa *index, int num_pessoas);
 void escreve_index(FILE *index_bin, IndexPessoa *index, int num_pessoas);
 
 //Função que realiza uma busca binária no índice primário pelo RRN correspondente ao ID buscado
-int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa);
+int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa, int modo);
 
 //Função que lê a Pessoa do arquvo cujo RRN é "RRN". Retorna uma estrutura com os dados da pessoa
-Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN);
+Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo);
