@@ -17,4 +17,3 @@ void busca_registro(FILE *pessoas_bin, FILE *index_bin, char *nome_campo, Pessoa
 
 //Função que busca o registro solicitado por meio de busca indexada com o idPessoa
 void busca_registro_indexada(FILE *pessoas_bin, FILE *index_bin, int idPessoa);
-

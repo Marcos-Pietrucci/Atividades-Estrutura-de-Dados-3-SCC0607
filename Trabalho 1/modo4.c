@@ -148,5 +148,3 @@ IndexPessoa* insere_pessoas_bin(FILE *pessoas_bin, FILE *index_bin, int n, int *
 
     return index;
 }
-
-

@@ -204,4 +204,3 @@ void busca_registro_indexada(FILE *pessoas_bin, FILE *index_bin, int idPessoa)
             printf("\nIdade: -\nTwitter: %s\n\n", pAux.twitterPessoa);
     }
 }
-
