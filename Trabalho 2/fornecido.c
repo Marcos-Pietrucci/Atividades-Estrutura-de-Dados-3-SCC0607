@@ -1,6 +1,6 @@
 /* Marcos Vinícus Firmino Pietrucci 10770072 */
 
-#include"header/fornecido.h"
+#include"fornecido.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

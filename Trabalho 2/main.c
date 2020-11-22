@@ -1,12 +1,8 @@
 /* Marcos Vinícus Firmino Pietrucci 10770072 */
 
 /* Arquivo principal do trabalho, a partir do qual será ativada as funcionalidades*/
-#include"header/main.h"
-#include"header/modo1.h"
-#include"header/modo2.h"
-#include"header/modo3.h"
-#include"header/modo4.h"
-#include"header/modo5.h"
+#include"main.h"
+
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -239,20 +235,11 @@ int main()
 
     switch(modo)
     {
-        case 1: modo1();
+        case 6: modo6();
                 break;
 
-        case 2: modo2();
-                break;
-        
-        case 3: modo3();
-                break;
-
-        case 4: modo4();
-                break;
-
-        case 5: modo5();
-                break;
+        default: printf("Ainda não foi implementado");
+                 break;
     }
 
     return 0;

@@ -1,12 +1,12 @@
 /* Marcos Vinícus Firmino Pietrucci 10770072 */
 
-#include"modo1.h"
+#include"header/modo1.h"
 #ifndef STDLIB_H
 #define STDLIB_H
 #include<stdlib.h>
 #endif
 #ifndef FORNECIDO_H_
-#include"fornecido.h"
+#include"header/fornecido.h"
 #define FORNECIDO_H_
 #endif
 
