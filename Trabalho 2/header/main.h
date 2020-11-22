@@ -60,3 +60,8 @@ int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa, int m
 
 //Função que lê a Pessoa do arquvo cujo RRN é "RRN". Retorna uma estrutura com os dados da pessoa
 Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo);
+
+//Função que lê o arquivo binário "Segue" e retorna um vetor com todos os dados
+//Segue* le_dados_arqSegue_BIN(char *nome_arq_bin);
+
+void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue);

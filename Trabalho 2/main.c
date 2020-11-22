@@ -1,8 +1,8 @@
 /* Marcos Vinícus Firmino Pietrucci 10770072 */
 
 /* Arquivo principal do trabalho, a partir do qual será ativada as funcionalidades*/
-#include"main.h"
-
+#include"header/main.h"
+#include"header/modo6.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -226,6 +226,39 @@ Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo_entrada)
 
     return pAux;
 }
+
+void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
+{
+    //Escrever o registro de cabeçalho
+    int i;
+    char status = '0';
+    fseek(arq_segue, 0, SEEK_SET);
+    fwrite(&status, sizeof(char), 1, arq_segue); //Arquivo INCONSISTENTE
+    fwrite(&num_segue, sizeof(int), 1, arq_segue);
+    status = '$';
+    for(i = 0; i < 27; i++)
+        fwrite(&status, sizeof(char), 1, arq_segue);
+
+    //Escreve todos os dados
+    i = 0;
+    while(i != num_segue)
+    {
+        fwrite(&(vetSegue[i]).removido, sizeof(char), 1, arq_segue);
+        fwrite(&(vetSegue[i]).idPessoaQueSegue, sizeof(int), 1, arq_segue);
+        fwrite(&(vetSegue[i]).idPessoaQueESeguida, sizeof(int), 1, arq_segue);
+        fwrite(&(vetSegue[i]).grauAmizade, sizeof(char), 3, arq_segue);
+        fwrite(&(vetSegue[i]).dataInicioQueSegue, sizeof(char), 10, arq_segue);
+        fwrite(&(vetSegue[i]).dataFimQueSegue, sizeof(char), 10, arq_segue);
+        i++;
+    }
+
+    //Atualiza o registro de cabeçalho
+    fseek(arq_segue, 0, SEEK_SET);
+    status = '1';
+    fwrite(&status, sizeof(char), 1, arq_segue); //Arquivo CONSISTENTE
+
+}
+
 
 int main()
 {
