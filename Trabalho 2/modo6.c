@@ -7,7 +7,7 @@
 #include<stdlib.h>
 #endif
 
-//Função que inicia a leitura das entradas e o processamento do modo
+//Função que inicia a leitura das entradas e o processamento do modo 6
 void modo6()
 {
     //Continua com a leitura
@@ -33,6 +33,7 @@ void modo6()
     // binarioNaTela1(nome_arq_bin, ) Impossível de ser usado no momento
 }
 
+//Função que lê as entradas do modo 1
 void le_entradas_modo6(char *nome_arq_csv, char *nome_arq_bin)
 {
     char lixo;
@@ -45,6 +46,7 @@ void le_entradas_modo6(char *nome_arq_csv, char *nome_arq_bin)
     scanf("%s", nome_arq_bin);
 }
 
+//Função que lê o arquivo CSV "Segue" e retorna um vetor com todos os dados
 Segue* le_dados_arqSegue_CSV(FILE *arq_csv, int *num_segue)
 {
     //Criando e alocando o vetor de Segue

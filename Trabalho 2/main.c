@@ -29,7 +29,7 @@ FILE* le_arquivo(char *nome, char *modo, int modo_entrada)
 }
 
 // Função que verifica se o cabeçalho está consistente
-int teste_consistencia_cabecalho(FILE *arq)
+int teste_consistencia_cabecalho(FILE *arq, int modo_entrada)
 {
     /***** Ler o registro de cabeçalho *******/
     char status;
@@ -40,7 +40,8 @@ int teste_consistencia_cabecalho(FILE *arq)
 
     if(status == '0')
     {   
-        printf("Falha no processamento do arquivo.");
+        if(modo_entrada == 7)
+            printf("Falha no processamento do arquivo.");
         return 0;
     }
     else
@@ -226,6 +227,57 @@ Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo_entrada)
 
     return pAux;
 }
+
+Segue* le_dados_arqSegue_BIN(FILE *arq_segue, int *num_segue)
+{
+    //Variáveis axuliares
+    *num_segue = -1;
+    Segue *vetSegue = malloc(sizeof(Segue));
+    Segue auxSegue;
+    char str_lixo[35], lixo;
+
+    //Verifica o status
+    fread(&lixo, sizeof(char), 1, arq_segue);
+    if(lixo == '0')
+    {
+        printf("Falha no carregamento do arquivo.");
+        return NULL;
+    }
+
+    //Lê o restante do registro de cabeçalho
+    fread(str_lixo, sizeof(char), 31, arq_segue);
+
+    //Inicia a leitura dos dados
+    while(fread(&auxSegue.removido, sizeof(char), 1, arq_segue) != 0)
+    {
+        if(auxSegue.removido == '0')
+        {
+            //Lê o restante do registro de cabeçalho
+            fread(str_lixo, sizeof(char), 31, arq_segue);
+        }
+
+        //Lê os dados
+        fread(&auxSegue.idPessoaQueSegue, sizeof(int), 1, arq_segue);
+        fread(&auxSegue.idPessoaQueESeguida, sizeof(int), 1, arq_segue);
+        fread(&auxSegue.grauAmizade, sizeof(char), 3, arq_segue);
+        fread(&auxSegue.dataInicioQueSegue, sizeof(char), 10, arq_segue);
+        fread(&auxSegue.dataFimQueSegue, sizeof(char), 10, arq_segue);
+        (*num_segue)++;
+
+        //Aloca no vetor
+        vetSegue = realloc(index, sizeof(Segue)*((*num_segue) + 1));
+
+        //Armazena o index lido no vetor
+        vetSegue[*num_segue] = auxSegue;
+    }
+    (*num_segue)++;
+
+    //Volta o ponteiro para o início
+    fseek(arq_segue, 0, SEEK_SET);
+
+    return vetSegue;
+}
+
 
 void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
 {

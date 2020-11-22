@@ -41,7 +41,7 @@ typedef struct {
 FILE* le_arquivo(char *nome, char *modo, int modo_entrada);
 
 //Função que verifica se o cabeçalho está consistente
-int teste_consistencia_cabecalho(FILE *arq);
+int teste_consistencia_cabecalho(FILE *arq, int modo_entrada);
 
 //Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários e adicionando 'removido'
 void prepara_structPessoa(Pessoa *pAux);
@@ -62,6 +62,7 @@ int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa, int m
 Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo);
 
 //Função que lê o arquivo binário "Segue" e retorna um vetor com todos os dados
-//Segue* le_dados_arqSegue_BIN(char *nome_arq_bin);
+Segue* le_dados_arqSegue_BIN(FILE *arq_segue, int *num_segue);
 
+//Função que escreve o arquivo "Segue" em disco
 void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue);

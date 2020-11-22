@@ -1,6 +1,0 @@
-- A função binário na tela pede 2 argumentos, um nome de arquivo binário e um nome de arquivo índice.
-	Como proceder no modo 6 no qual há apenas um arquivo binário?
-
-- Foi especificado no trabalho (vide o print) que não haverão valores nulos nem necessidade de truncamento
-	Essa informação procede? Devo confiar que nenhum dos campos de "Segue" serão nulos?
-	Se sim, por que no modo 8 está especificado que "Valores nulos devem ser substituídos pelo caractere "-"". ?
