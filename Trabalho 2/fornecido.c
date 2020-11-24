@@ -1,10 +1,9 @@
-/* Marcos Vinícus Firmino Pietrucci 10770072 */
-
-#include"header/fornecido.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+
+
 
 /*
 * Abaixo seguem funções que fazem a escrita do binário em "stdout" (tela) pra poder ser comparado no run.codes.
@@ -20,8 +19,6 @@
 *
 * Já está tudo testado e funcionando, mas qualquer dúvida acerca destas funções, falar com o monitor Matheus (mcarvalhor@usp.br).
 */
-
-
 
 void binarioNaTela1(char *nomeArquivoBinario, char *nomeArquivoIndice) {
 
@@ -96,7 +93,7 @@ void trim(char *str) {
 
 
 
-void scan_quote_string(char *str, int len) {
+void scan_quote_string(char *str) {
 
 	/*
 	*	Use essa função para ler um campo string delimitado entre aspas (").
@@ -112,7 +109,6 @@ void scan_quote_string(char *str, int len) {
 	*/
 
 	char R;
-	int indc = 0;
 
 	while((R = getchar()) != EOF && isspace(R)); // ignorar espaços, \r, \n...
 
@@ -120,25 +116,10 @@ void scan_quote_string(char *str, int len) {
 		getchar(); getchar(); getchar(); // ignorar o "ULO" de NULO.
 		strcpy(str, ""); // copia string vazia
 	} else if(R == '\"') {
-		scanf("%c", &R);
-		while(R != '\"' && indc != len - 1) //Enquanto não ler uma aspas ou não ultrapassar o limite de tamanho 
-		{ // ler até o fechamento das aspas
-			str[indc] = R;
-			indc++;
-			if(indc == len)
-				break;
-
-			scanf("%c", &R);
+		if(scanf("%[^\"]", str) != 1) { // ler até o fechamento das aspas
+			strcpy(str, "");
 		}
-		if(indc != len - 1)
-			str[indc] = '\0';
-		else
-			str[indc] = '\0';
-		
-		//Terminar de ler o lixo até as aspas
-		while(R != '\"')
-			scanf("%c", &R);
-		
+		getchar(); // ignorar aspas fechando
 	} else if(R != EOF){ // vc tá tentando ler uma string que não tá entre aspas! Fazer leitura normal %s então...
 		*str = R;
 		str++;
@@ -151,3 +132,41 @@ void scan_quote_string(char *str, int len) {
 		strcpy(str, "");
 	}
 }
+
+void binarioNaTela(char *nomeArquivoBinario) {
+
+	unsigned long i, cs;
+	unsigned char *mb;
+	size_t fl;
+	FILE *fs;
+	if(nomeArquivoBinario == NULL || !(fs = fopen(nomeArquivoBinario, "rb"))) {
+		fprintf(stderr, "ERRO AO ESCREVER O BINARIO NA TELA (função binarioNaTela): não foi possível abrir o arquivo que me passou para leitura. Ele existe e você tá passando o nome certo? Você lembrou de fechar ele com fclose depois de usar?\n");
+		return;
+	}
+	//determines the number of bytes in the file
+	fseek(fs, 0, SEEK_END);
+	fl = ftell(fs);
+
+	//Drags the cursor back to the beginning
+	fseek(fs, 0, SEEK_SET);
+
+	//Defines a string of size #bytes
+	//Saves "bytewise" inside the string
+	mb = (unsigned char *) malloc(fl);
+	fread(mb, 1, fl, fs);
+
+	//sums up a cast to unsigned long for each character of mb
+	cs = 0;
+	for(i = 0; i < fl; i++) {
+		cs += (unsigned long) mb[i];
+	}
+
+	//prints a cast of cs/100 to double
+	printf("%lf\n", (cs / (double) 100));
+
+	//frees the memory and closes the file
+	free(mb);
+	fclose(fs);
+}
+
+

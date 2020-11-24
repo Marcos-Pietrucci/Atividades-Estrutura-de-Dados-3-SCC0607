@@ -28,6 +28,11 @@ void modo7()
 
     //Ordena os dados
     ordena_vetSegue(vetSegue, num_segue);
+
+    //Escreve o arquivo Segue em disco
+    escreve_arqSegue(arq_ordenado, vetSegue, num_segue);
+
+    //Binário na tela ainda vai ser fornecido
 }
 
 void le_entradas_modo7(char *arq_segue_nome, char *nome_arq_ordenado)
@@ -44,17 +49,55 @@ void le_entradas_modo7(char *arq_segue_nome, char *nome_arq_ordenado)
 
 int compara_vetSegue(Segue a, Segue b)
 {
-    if(a.idPessoaQueSegue > b.idPessoaQueSegue ||
-       a.idPessoaQueESeguida > b.idPessoaQueESeguida ||
-       strcmp(a.dataInicioQueSegue, b.dataInicioQueSegue) > 0 || //Não tenho certeza disso aqui
-       strcmp(a.dataFimQueSegue, b.dataFimQueSegue) > 0)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
+    int v1,v2,v3,v4;
+    v1 = a.idPessoaQueSegue - b.idPessoaQueSegue;
+    v2 = a.idPessoaQueESeguida - b.idPessoaQueESeguida;
+    v3 = strcmp(a.dataInicioQueSegue, b.dataInicioQueSegue);
+    v4 = strcmp(a.dataFimQueSegue, b.dataFimQueSegue);
+
+   if(v1 > 0)
+   {
+       return 1;
+   }
+   else
+   {
+       if(v1 == 0)
+       {
+           if(v2 > 0)
+            {
+                return 1;
+            }
+            else
+            {
+                if(v2 == 0)
+                {
+                    if(v3 < 0)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        if(v3 == 0)
+                        {
+                            if(v4 < 0)
+                            {
+                                return 1;
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        }
+                        return 0;
+                    }
+                }
+                return 0;
+            }
+       }
+
+       return 0;
+   }
+   
 }
 
 void ordena_vetSegue(Segue *vetSegue, int num_segue)
@@ -66,12 +109,14 @@ void ordena_vetSegue(Segue *vetSegue, int num_segue)
     {  
         key = vetSegue[i];  
         j = i - 1;  
-        while (j >= 0 &&  compara_vetSegue(vetSegue[j], key)) 
+        while (j >= 0 && compara_vetSegue(vetSegue[j], key)) 
         {  
             vetSegue[j + 1] = vetSegue[j];  
             j = j - 1;  
         }  
         vetSegue[j + 1] = key;  
-    }  
+    } 
 
+    //qsort(vetSegue, num_segue, 32, compara_vetSegue(Segue a, Segue b));
+    //Não entendi como que usa
 }

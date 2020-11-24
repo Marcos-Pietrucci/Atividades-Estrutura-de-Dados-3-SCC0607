@@ -11,11 +11,11 @@
 void modo6()
 {
     //Continua com a leitura
-    char nome_arq_csv[15], nome_arq_bin[15];
+    char nome_arq_csv[30], nome_arq_bin[30];
 
     le_entradas_modo6(nome_arq_csv, nome_arq_bin);
 
-    FILE *arq_csv = le_arquivo(nome_arq_bin, "rb", 1);
+    FILE *arq_csv = le_arquivo(nome_arq_csv, "r", 1);
     if(arq_csv == NULL)
         return;
     FILE *arq_segue_bin = le_arquivo(nome_arq_bin, "wb", 1);
@@ -25,12 +25,19 @@ void modo6()
     int num_segue = 0;
     Segue *vetSegue = le_dados_arqSegue_CSV(arq_csv, &num_segue);
 
+    int i;
+    for(i = 0; i < num_segue; i++)
+    {
+        printf("\n%c   %d   %d    %s    %s   %s\n", vetSegue[i].removido, vetSegue[i].idPessoaQueSegue, vetSegue[i].idPessoaQueESeguida, vetSegue[i].grauAmizade, 
+        vetSegue[i].dataInicioQueSegue, vetSegue[i].dataFimQueSegue);
+    }
+
     escreve_arqSegue(arq_segue_bin, vetSegue, num_segue);
 
     fclose(arq_csv);
     fclose(arq_segue_bin);
 
-    // binarioNaTela1(nome_arq_bin, ) Impossível de ser usado no momento
+    binarioNaTela(nome_arq_bin);// Impossível de ser usado no momento
 }
 
 //Função que lê as entradas do modo 1
@@ -54,27 +61,15 @@ Segue* le_dados_arqSegue_CSV(FILE *arq_csv, int *num_segue)
     *num_segue = 0;
 
     //Cria variáveis axuliares
-    char lixo, strLixo[80];
+    char lixo, strLixo[100];
     Segue segueAux;
 
     //Lê a primeira linha do arquivo (que contém lixo)
     fscanf(arq_csv, "%s", strLixo);
 
-    while(fscanf(arq_csv, "%c", &segueAux.removido) != -1)
+    //Lê o ID que segue
+    while(fscanf(arq_csv, "%d", &segueAux.idPessoaQueSegue) != -1)
     {
-        if(segueAux.removido == '0')
-        {
-            //O registro foi removido, ler o restante como lixo
-            fread(strLixo, sizeof(char), 31, arq_csv);
-            continue;
-        }
-
-        //Lê uma virgula
-        fscanf(arq_csv, "%c", &lixo);
-
-        //Lê o ID que segue
-        fscanf(arq_csv, "%d", &segueAux.idPessoaQueSegue);
-
         //Lê uma virgula
         fscanf(arq_csv, "%c", &lixo);
 
@@ -86,17 +81,25 @@ Segue* le_dados_arqSegue_CSV(FILE *arq_csv, int *num_segue)
 
         //Lê o grau de amizade
         fscanf(arq_csv, "%c", &lixo); //Lê o indicador
-        fread(strLixo, sizeof(char), 2, arq_csv); //Lê o \0 e o $
         segueAux.grauAmizade[0] = lixo;
         segueAux.grauAmizade[1] = '\0';
         segueAux.grauAmizade[2] = '$';
 
+        //Lê uma virgula
+        fscanf(arq_csv, "%c", &lixo);
+
         //Lê a data de início que segue
         fread(&segueAux.dataInicioQueSegue, sizeof(char), 10, arq_csv);
+        segueAux.dataInicioQueSegue[10] = '\0';
+
+        //Lê uma virgula
+        fscanf(arq_csv, "%c", &lixo);
 
         //Lê a data de fim que segue
         fread(&segueAux.dataFimQueSegue, sizeof(char), 10, arq_csv);
-
+        segueAux.dataFimQueSegue[10] = '\0';
+        
+        segueAux.removido = '1';
         //Considerando que os arquivos não precisam de truncamento nem assumem valores nulos
         vetSegue = realloc(vetSegue, sizeof(Segue) * ((*num_segue) + 1));
         vetSegue[*num_segue] = segueAux;

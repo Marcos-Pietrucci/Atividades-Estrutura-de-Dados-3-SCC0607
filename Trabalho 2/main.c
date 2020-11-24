@@ -311,7 +311,6 @@ void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
 
 }
 
-
 int main()
 {
     int modo;

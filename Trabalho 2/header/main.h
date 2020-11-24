@@ -30,8 +30,8 @@ typedef struct {
     int idPessoaQueSegue;
     int idPessoaQueESeguida;
     char grauAmizade[3];
-    char dataInicioQueSegue[10];
-    char dataFimQueSegue[10];
+    char dataInicioQueSegue[11];
+    char dataFimQueSegue[11];
 }Segue;
 
 
