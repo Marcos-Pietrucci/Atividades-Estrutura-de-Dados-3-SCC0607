@@ -1,8 +1,9 @@
 /* Marcos Vinícus Firmino Pietrucci 10770072 */
 
 /* Arquivo principal do trabalho, a partir do qual será ativada as funcionalidades*/
-#include"header/main.h"
-#include"header/modo6.h"
+#include"main.h"
+#include"modo6.h"
+#include"modo7.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -262,10 +263,12 @@ Segue* le_dados_arqSegue_BIN(FILE *arq_segue, int *num_segue)
         fread(&auxSegue.grauAmizade, sizeof(char), 3, arq_segue);
         fread(&auxSegue.dataInicioQueSegue, sizeof(char), 10, arq_segue);
         fread(&auxSegue.dataFimQueSegue, sizeof(char), 10, arq_segue);
+        auxSegue.dataInicioQueSegue[10] = '\0';
+        auxSegue.dataFimQueSegue[10] = '\0';
         (*num_segue)++;
 
         //Aloca no vetor
-        vetSegue = realloc(index, sizeof(Segue)*((*num_segue) + 1));
+        vetSegue = realloc(vetSegue, sizeof(Segue)*((*num_segue) + 1));
 
         //Armazena o index lido no vetor
         vetSegue[*num_segue] = auxSegue;
@@ -320,6 +323,9 @@ int main()
     switch(modo)
     {
         case 6: modo6();
+                break;
+
+        case 7: modo7();
                 break;
 
         default: printf("Ainda não foi implementado");

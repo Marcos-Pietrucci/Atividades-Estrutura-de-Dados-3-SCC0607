@@ -1,7 +1,10 @@
 /* Marcos Vinícus Firmino Pietrucci 10770072 */
 
-#include"header/modo6.h"
-#include"header/fornecido.h"
+#include"modo6.h"
+#ifndef FORNECIDO_H_
+#define FORNECIDO_H_
+#include"fornecido.h"
+#endif
 #ifndef STDLIB_H
 #define STDLIB_H
 #include<stdlib.h>
@@ -25,19 +28,14 @@ void modo6()
     int num_segue = 0;
     Segue *vetSegue = le_dados_arqSegue_CSV(arq_csv, &num_segue);
 
-    int i;
-    for(i = 0; i < num_segue; i++)
-    {
-        printf("\n%c   %d   %d    %s    %s   %s\n", vetSegue[i].removido, vetSegue[i].idPessoaQueSegue, vetSegue[i].idPessoaQueESeguida, vetSegue[i].grauAmizade, 
-        vetSegue[i].dataInicioQueSegue, vetSegue[i].dataFimQueSegue);
-    }
-
     escreve_arqSegue(arq_segue_bin, vetSegue, num_segue);
 
     fclose(arq_csv);
     fclose(arq_segue_bin);
 
-    binarioNaTela(nome_arq_bin);// Impossível de ser usado no momento
+    binarioNaTela2(nome_arq_bin);
+
+
 }
 
 //Função que lê as entradas do modo 1

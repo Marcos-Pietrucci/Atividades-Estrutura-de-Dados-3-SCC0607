@@ -3,7 +3,7 @@
 /* Header referente ao modo 6 */
 #ifndef MAIN_H
 #define MAIN_H
-#include"header/main.h"
+#include"main.h"
 #endif
 
 //Função que inicia a leitura das entradas e o processamento do modo 6

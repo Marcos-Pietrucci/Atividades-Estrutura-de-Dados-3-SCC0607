@@ -1,7 +1,10 @@
 /* Marcos Vinícus Firmino Pietrucci 10770072 */
 
-#include"header/modo7.h"
-#include"header/fornecido.h"
+#include "modo7.h"
+#ifndef FORNECIDO_H_
+#define FORNECIDO_H_
+#include"fornecido.h"
+#endif
 #ifndef STDLIB_H
 #define STDLIB_H
 #include<stdlib.h>
@@ -11,12 +14,14 @@
 void modo7()
 {
     //Continuar com a leitura
-    char arq_segue_nome[15], nome_arq_ordenado[15];
+    char arq_segue_nome[30], nome_arq_ordenado[30];
 
     le_entradas_modo7(arq_segue_nome, nome_arq_ordenado);
 
     FILE *arq_segue = le_arquivo(arq_segue_nome, "rb", 1);
-    if(arq_segue == NULL && !teste_consistencia_cabecalho(arq_segue, 7) ) 
+    if(arq_segue == NULL)
+        return;
+    else if (!teste_consistencia_cabecalho(arq_segue, 7)) 
         return;
     FILE *arq_ordenado = le_arquivo(nome_arq_ordenado, "wb", 1);
     if(arq_ordenado == NULL)
@@ -33,6 +38,9 @@ void modo7()
     escreve_arqSegue(arq_ordenado, vetSegue, num_segue);
 
     //Binário na tela ainda vai ser fornecido
+    binarioNaTela2(nome_arq_ordenado);
+
+    
 }
 
 void le_entradas_modo7(char *arq_segue_nome, char *nome_arq_ordenado)
@@ -52,7 +60,7 @@ int compara_vetSegue(Segue a, Segue b)
     int v1,v2,v3,v4;
     v1 = a.idPessoaQueSegue - b.idPessoaQueSegue;
     v2 = a.idPessoaQueESeguida - b.idPessoaQueESeguida;
-    v3 = strcmp(a.dataInicioQueSegue, b.dataInicioQueSegue);
+    v3 = strcmp(a.dataInicioQueSegue, b.dataInicioQueSegue); //Será que o mais antigo tem prioridade? Ou o mais recente??
     v4 = strcmp(a.dataFimQueSegue, b.dataFimQueSegue);
 
    if(v1 > 0)

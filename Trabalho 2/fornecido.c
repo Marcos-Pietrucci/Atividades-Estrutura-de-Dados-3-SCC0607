@@ -20,6 +20,8 @@
 * Já está tudo testado e funcionando, mas qualquer dúvida acerca destas funções, falar com o monitor Matheus (mcarvalhor@usp.br).
 */
 
+
+
 void binarioNaTela1(char *nomeArquivoBinario, char *nomeArquivoIndice) {
 
 	/* Use essa função para comparação no run.codes. Lembre-se de ter fechado (fclose) o arquivo anteriormente.
@@ -54,6 +56,33 @@ void binarioNaTela1(char *nomeArquivoBinario, char *nomeArquivoIndice) {
 	fread(mb, 1, fl, fi);
 	fclose(fi);
 	cs += fl;
+	for(i = 0; i < fl; i++) {
+		cs += (unsigned long) mb[i];
+	}
+	printf("%lf\n", (cs / (double) 100));
+	free(mb);
+}
+
+void binarioNaTela2(char *nomeArquivoBinario) {
+
+	/* Use essa função para comparação no run.codes. Lembre-se de ter fechado (fclose) o arquivo anteriormente.
+	*  Ela vai abrir de novo para leitura e depois fechar (você não vai perder pontos por isso se usar ela). */
+
+	unsigned long i, cs;
+	unsigned char *mb;
+	FILE *fs;
+	size_t fl;
+	if(nomeArquivoBinario == NULL || !(fs = fopen(nomeArquivoBinario, "rb"))) {
+		fprintf(stderr, "ERRO NA FUNÇÃO BINARIO NA TELA. Não se esqueça do fclose e verifique se passou o argumento corretamente!\n");
+		return;
+	}
+	fseek(fs, 0, SEEK_END);
+	fl = ftell(fs);
+	fseek(fs, 0, SEEK_SET);
+	mb = (unsigned char *) malloc(fl);
+	fread(mb, 1, fl, fs);
+	fclose(fs);
+	cs = fl;
 	for(i = 0; i < fl; i++) {
 		cs += (unsigned long) mb[i];
 	}
@@ -131,42 +160,6 @@ void scan_quote_string(char *str) {
 	} else { // EOF
 		strcpy(str, "");
 	}
-}
-
-void binarioNaTela(char *nomeArquivoBinario) {
-
-	unsigned long i, cs;
-	unsigned char *mb;
-	size_t fl;
-	FILE *fs;
-	if(nomeArquivoBinario == NULL || !(fs = fopen(nomeArquivoBinario, "rb"))) {
-		fprintf(stderr, "ERRO AO ESCREVER O BINARIO NA TELA (função binarioNaTela): não foi possível abrir o arquivo que me passou para leitura. Ele existe e você tá passando o nome certo? Você lembrou de fechar ele com fclose depois de usar?\n");
-		return;
-	}
-	//determines the number of bytes in the file
-	fseek(fs, 0, SEEK_END);
-	fl = ftell(fs);
-
-	//Drags the cursor back to the beginning
-	fseek(fs, 0, SEEK_SET);
-
-	//Defines a string of size #bytes
-	//Saves "bytewise" inside the string
-	mb = (unsigned char *) malloc(fl);
-	fread(mb, 1, fl, fs);
-
-	//sums up a cast to unsigned long for each character of mb
-	cs = 0;
-	for(i = 0; i < fl; i++) {
-		cs += (unsigned long) mb[i];
-	}
-
-	//prints a cast of cs/100 to double
-	printf("%lf\n", (cs / (double) 100));
-
-	//frees the memory and closes the file
-	free(mb);
-	fclose(fs);
 }
 
 
