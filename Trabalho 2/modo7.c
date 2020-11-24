@@ -16,12 +16,12 @@ void modo7()
     //Continuar com a leitura
     char arq_segue_nome[30], nome_arq_ordenado[30];
 
+    //Lê as entradas
     le_entradas_modo7(arq_segue_nome, nome_arq_ordenado);
 
+    //Abre os arquivos pertinentes
     FILE *arq_segue = le_arquivo(arq_segue_nome, "rb", 1);
-    if(arq_segue == NULL)
-        return;
-    else if (!teste_consistencia_cabecalho(arq_segue, 7)) 
+    if(arq_segue == NULL || !teste_consistencia_cabecalho(arq_segue, 7)) 
         return;
     FILE *arq_ordenado = le_arquivo(nome_arq_ordenado, "wb", 1);
     if(arq_ordenado == NULL)
@@ -39,10 +39,9 @@ void modo7()
 
     //Binário na tela ainda vai ser fornecido
     binarioNaTela2(nome_arq_ordenado);
-
-    
 }
 
+//Função que lê as entradas do modo 7
 void le_entradas_modo7(char *arq_segue_nome, char *nome_arq_ordenado)
 {
     char lixo;
@@ -55,6 +54,7 @@ void le_entradas_modo7(char *arq_segue_nome, char *nome_arq_ordenado)
     scanf("%s", nome_arq_ordenado);
 }
 
+//Função que comprara dois registros de "Segue" segundo os critérios definidos
 int compara_vetSegue(Segue a, Segue b)
 {
     int v1,v2,v3,v4;
@@ -63,7 +63,7 @@ int compara_vetSegue(Segue a, Segue b)
     v3 = strcmp(a.dataInicioQueSegue, b.dataInicioQueSegue); //Será que o mais antigo tem prioridade? Ou o mais recente??
     v4 = strcmp(a.dataFimQueSegue, b.dataFimQueSegue);
 
-   if(v1 > 0)
+   if(v1 > 0) //Primeiro critério: idPessoaQueSegue
    {
        return 1;
    }
@@ -71,7 +71,7 @@ int compara_vetSegue(Segue a, Segue b)
    {
        if(v1 == 0)
        {
-           if(v2 > 0)
+           if(v2 > 0) //Segundo critério: idPessoaQueESeguida
             {
                 return 1;
             }
@@ -79,7 +79,7 @@ int compara_vetSegue(Segue a, Segue b)
             {
                 if(v2 == 0)
                 {
-                    if(v3 < 0)
+                    if(v3 < 0) //Terceiro critério: dataInicioQueSegue
                     {
                         return 1;
                     }
@@ -87,12 +87,12 @@ int compara_vetSegue(Segue a, Segue b)
                     {
                         if(v3 == 0)
                         {
-                            if(v4 < 0)
+                            if(v4 < 0) //Quarto critério: dataFimQueSegue
                             {
-                                return 1;
+                                return 1; 
                             }
                             else
-                            {
+                            {   //Mesmo que ocorra um empate total, retorna um valor válido para a comparação
                                 return 0;
                             }
                         }
@@ -124,7 +124,4 @@ void ordena_vetSegue(Segue *vetSegue, int num_segue)
         }  
         vetSegue[j + 1] = key;  
     } 
-
-    //qsort(vetSegue, num_segue, 32, compara_vetSegue(Segue a, Segue b));
-    //Não entendi como que usa
 }

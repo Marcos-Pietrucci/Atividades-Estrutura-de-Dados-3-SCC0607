@@ -229,6 +229,7 @@ Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo_entrada)
     return pAux;
 }
 
+//Função que lê o arquivo binário "Segue" e retorna um vetor com todos os dados
 Segue* le_dados_arqSegue_BIN(FILE *arq_segue, int *num_segue)
 {
     //Variáveis axuliares
@@ -281,7 +282,7 @@ Segue* le_dados_arqSegue_BIN(FILE *arq_segue, int *num_segue)
     return vetSegue;
 }
 
-
+//Função que escreve o arquivo "Segue" em disco
 void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
 {
     //Escrever o registro de cabeçalho
@@ -298,6 +299,7 @@ void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
     i = 0;
     while(i != num_segue)
     {
+        //Escreve os valores do vetor de estruturas em disco
         fwrite(&(vetSegue[i]).removido, sizeof(char), 1, arq_segue);
         fwrite(&(vetSegue[i]).idPessoaQueSegue, sizeof(int), 1, arq_segue);
         fwrite(&(vetSegue[i]).idPessoaQueESeguida, sizeof(int), 1, arq_segue);
