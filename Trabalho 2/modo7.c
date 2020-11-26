@@ -10,7 +10,7 @@
 #include<stdlib.h>
 #endif
 
-//Função que inicia a leitura das entradas e o processamento do modo 6
+//Função que inicia a leitura das entradas e o processamento do modo 7
 void modo7()
 {
     //Continuar com a leitura
@@ -37,7 +37,9 @@ void modo7()
     //Escreve o arquivo Segue em disco
     escreve_arqSegue(arq_ordenado, vetSegue, num_segue);
 
-    //Binário na tela ainda vai ser fornecido
+    fclose(arq_ordenado);
+    fclose(arq_segue);
+
     binarioNaTela2(nome_arq_ordenado);
 }
 

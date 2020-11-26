@@ -34,8 +34,6 @@ void modo6()
     fclose(arq_segue_bin);
 
     binarioNaTela2(nome_arq_bin);
-
-
 }
 
 //Função que lê as entradas do modo 1

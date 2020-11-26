@@ -6,7 +6,7 @@
 #include"main.h"
 #endif
 
-//Função que inicia a leitura das entradas e o processamento do modo 6
+//Função que inicia a leitura das entradas e o processamento do modo 7
 void modo7();
 
 //Função que lê as entradas do modo 7

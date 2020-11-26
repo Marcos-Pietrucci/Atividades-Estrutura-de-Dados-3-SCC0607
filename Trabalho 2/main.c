@@ -4,6 +4,7 @@
 #include"main.h"
 #include"modo6.h"
 #include"modo7.h"
+#include"modo8.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -42,6 +43,8 @@ int teste_consistencia_cabecalho(FILE *arq, int modo_entrada)
     if(status == '0')
     {   
         if(modo_entrada == 7)
+            printf("Falha no carregamento do arquivo.");
+        else if(modo_entrada == 8)
             printf("Falha no processamento do arquivo.");
         return 0;
     }
@@ -288,7 +291,6 @@ void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
     //Escrever o registro de cabeçalho
     int i;
     char status = '0';
-    fseek(arq_segue, 0, SEEK_SET);
     fwrite(&status, sizeof(char), 1, arq_segue); //Arquivo INCONSISTENTE
     fwrite(&num_segue, sizeof(int), 1, arq_segue);
     status = '$';
@@ -313,7 +315,32 @@ void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
     fseek(arq_segue, 0, SEEK_SET);
     status = '1';
     fwrite(&status, sizeof(char), 1, arq_segue); //Arquivo CONSISTENTE
+}
 
+//Função faz uma busca binária no vetorSegue e retorna o índice do registro que contém "idPessoaQueSegue"
+int busca_binaria_arqSegue(Segue *vetSegue, int num_segue, int idPessoaQueSegue, int modo_entrada)
+{
+    //Algoritmo da busca binária
+    int inf = 0;
+    int sup = num_segue-1;
+    int meio;
+    while(inf <= sup)
+    {
+        meio = (inf+sup)/2;
+
+        if(vetSegue[meio].idPessoaQueSegue == idPessoaQueSegue)
+            return meio;
+        
+        else if(vetSegue[meio].idPessoaQueSegue > idPessoaQueSegue)
+            sup = meio-1;
+        else
+            inf = meio+1;
+    }
+
+    //Apenas no modo 3 deve-se imprimir uma mensagem de erro
+    if(modo_entrada == 3)
+        printf("Registro inexistente.");
+    return -1;
 }
 
 int main()
@@ -330,8 +357,8 @@ int main()
         case 7: modo7();
                 break;
 
-        default: printf("Ainda não foi implementado");
-                 break;
+        case 8: modo8();
+                break;
     }
 
     return 0;

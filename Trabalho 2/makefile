@@ -5,7 +5,7 @@ CFLAGS=-I. -g -Wall
 
 #LIBS=-lm
 
-DEPS= header/*.h	
+DEPS= *.h	
 
 #OBJ= buscaRecursiva.o TAD_lista.o mergesort.o main.o 
 OBJ= *.c 
