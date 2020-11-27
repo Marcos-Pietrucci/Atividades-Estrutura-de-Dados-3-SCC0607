@@ -18,8 +18,8 @@ Pessoa busca_pessoa_indexada(FILE* arq_pessoas_bin, FILE *arq_index_bin, int idP
 //Função que exibe na tela as informações da pessoa p
 void exibe_informacoes_pessoa(Pessoa pAux);
 
-//Função que busca e exibe todos os registros que possuem um determinado "idPessoaQueSegue"
-void busca_arqSegue_idPessoaQueSegue();
-
 //Fimção que exibe na tela as informações da relação "Segue" cujo índice é "indc_no_vetor"
 void exibe_informacoes_segue(Segue *vetSegue, int indc_no_vetor);
+
+//Função que busca e exibe todos os registros que possuem um determinado "idPessoaQueSegue"
+void busca_arqSegue_idPessoaQueSegue(FILE *arq_segue_bin, Pessoa pessoaBusca);

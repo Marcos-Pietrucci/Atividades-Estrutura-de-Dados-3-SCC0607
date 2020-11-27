@@ -36,11 +36,8 @@ void modo8()
     if(pessoaBusca.idPessoa == -1)
         return;
     
-    //De posse da pessoa a ser buscada, exibir suas informações
-    exibe_informacoes_pessoa(pessoaBusca);
-
     //Realizar a busca de registros no arquivo "segue"
-    busca_arqSegue_idPessoaQueSegue(arq_segue_bin, idPessoaBusca);
+    busca_arqSegue_idPessoaQueSegue(arq_segue_bin, pessoaBusca);
 
     fclose(arq_segue_bin);
     fclose(arq_pessoas_bin);
@@ -149,7 +146,7 @@ void exibe_informacoes_segue(Segue *vetSegue, int indc_no_vetor)
 }
 
 //Função que busca e exibe todos os registros que possuem um determinado "idPessoaQueSegue"
-void busca_arqSegue_idPessoaQueSegue(FILE *arq_segue_bin, int idPessoaQueSegue)
+void busca_arqSegue_idPessoaQueSegue(FILE *arq_segue_bin, Pessoa pessoaBusca)
 {
     //Lê o vetor "segue" da memória
     int num_segue;
@@ -157,18 +154,24 @@ void busca_arqSegue_idPessoaQueSegue(FILE *arq_segue_bin, int idPessoaQueSegue)
 
     //Busca binária pelo índice no vetor correspondente ao registro com "idPessoaQueSegue"
     int i;
-    int indc_no_vetor = busca_binaria_arqSegue(vetSegue, num_segue, idPessoaQueSegue, 8);
+    int indc_no_vetor = busca_binaria_arqSegue(vetSegue, num_segue, pessoaBusca.idPessoa, 8);
     i = indc_no_vetor;
+
+    //Se não existem registros, o join deu errado. Retornar
+    if(i == -1)
+        return;
+    else
+        exibe_informacoes_pessoa(pessoaBusca);
 
     //Navegar PARA TRÁS no vetor de registros
     i--;
-    while(vetSegue[i].idPessoaQueSegue == idPessoaQueSegue)
+    while(vetSegue[i].idPessoaQueSegue == pessoaBusca.idPessoa)
         i--;
 
     i++;
 
     //Exibe as informações de trás para frente
-    while(vetSegue[i].idPessoaQueSegue == idPessoaQueSegue)
+    while(vetSegue[i].idPessoaQueSegue == pessoaBusca.idPessoa)
     {
         exibe_informacoes_segue(vetSegue, i);
         i++;

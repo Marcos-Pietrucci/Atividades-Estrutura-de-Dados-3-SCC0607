@@ -285,7 +285,7 @@ Segue* le_dados_arqSegue_BIN(FILE *arq_segue, int *num_segue)
     return vetSegue;
 }
 
-//Função que escreve o arquivo "Segue" em disco
+//Função que escreve o os registros no vetor de "Segue" em disco
 void escreve_arqSegue(FILE *arq_segue, Segue *vetSegue, int num_segue)
 {
     //Escrever o registro de cabeçalho
@@ -337,8 +337,8 @@ int busca_binaria_arqSegue(Segue *vetSegue, int num_segue, int idPessoaQueSegue,
             inf = meio+1;
     }
 
-    //Apenas no modo 3 deve-se imprimir uma mensagem de erro
-    if(modo_entrada == 3)
+    //Apenas no modo 8 deve-se imprimir uma mensagem de erro
+    if(modo_entrada == 8)
         printf("Registro inexistente.");
     return -1;
 }

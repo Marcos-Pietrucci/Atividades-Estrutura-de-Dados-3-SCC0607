@@ -16,8 +16,10 @@ void modo6()
     //Continua com a leitura
     char nome_arq_csv[30], nome_arq_bin[30];
 
+    //Lê o restante das entradas
     le_entradas_modo6(nome_arq_csv, nome_arq_bin);
 
+    //Abre os arquivos necessários
     FILE *arq_csv = le_arquivo(nome_arq_csv, "r", 1);
     if(arq_csv == NULL)
         return;
@@ -25,9 +27,11 @@ void modo6()
     if(arq_segue_bin == NULL)
         return;
 
+    //Lê os dados do arquivo CSV e retorna um vetor com esses arquivos
     int num_segue = 0;
     Segue *vetSegue = le_dados_arqSegue_CSV(arq_csv, &num_segue);
 
+    //Escreve as informações lidas em disco
     escreve_arqSegue(arq_segue_bin, vetSegue, num_segue);
 
     fclose(arq_csv);
