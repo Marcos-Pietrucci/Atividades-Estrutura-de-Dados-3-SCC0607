@@ -36,7 +36,7 @@ void modo6()
 
     fclose(arq_csv);
     fclose(arq_segue_bin);
-
+    
     binarioNaTela2(nome_arq_bin);
 }
 

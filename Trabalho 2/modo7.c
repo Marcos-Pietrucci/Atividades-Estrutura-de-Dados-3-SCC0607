@@ -37,6 +37,7 @@ void modo7()
     //Escreve o arquivo Segue em disco
     escreve_arqSegue(arq_ordenado, vetSegue, num_segue);
 
+    free(vetSegue);
     fclose(arq_ordenado);
     fclose(arq_segue);
 

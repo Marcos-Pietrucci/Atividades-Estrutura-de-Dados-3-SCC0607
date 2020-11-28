@@ -96,7 +96,7 @@ Pessoa busca_pessoa_indexada(FILE* arq_pessoas_bin, FILE *arq_index_bin, int idP
 void exibe_informacoes_pessoa(Pessoa pAux)
 {
     //Exibe as informações da Pessoa conforme formatação indicada
-    int flag_idade;
+    int flag_idade = 0;
     if(pAux.nomePessoa[0] == '\0')
     {
         pAux.nomePessoa[0] = '-';
@@ -176,4 +176,6 @@ void busca_arqSegue_idPessoaQueSegue(FILE *arq_segue_bin, Pessoa pessoaBusca)
         exibe_informacoes_segue(vetSegue, i);
         i++;
     }    
+
+    free(vetSegue);
 }
