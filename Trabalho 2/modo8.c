@@ -165,13 +165,13 @@ void busca_arqSegue_idPessoaQueSegue(FILE *arq_segue_bin, Pessoa pessoaBusca)
 
     //Navegar PARA TRÁS no vetor de registros
     i--;
-    while(vetSegue[i].idPessoaQueSegue == pessoaBusca.idPessoa)
+    while(vetSegue[i].idPessoaQueSegue == pessoaBusca.idPessoa && i > 0)
         i--;
 
     i++;
 
     //Exibe as informações de trás para frente
-    while(vetSegue[i].idPessoaQueSegue == pessoaBusca.idPessoa)
+    while(vetSegue[i].idPessoaQueSegue == pessoaBusca.idPessoa && i < num_segue)
     {
         exibe_informacoes_segue(vetSegue, i);
         i++;
