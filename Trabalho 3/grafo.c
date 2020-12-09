@@ -57,13 +57,14 @@ void imprime_grafo(Grafo* gr)
         printf("%s", aux->nomePessoa);
         percorre_lista = aux->segue;
         if(percorre_lista != NULL)
-            while(percorre_lista->prox != NULL) //Percorrer a lista de seguidores
+        {
+            while(percorre_lista != NULL) //Percorrer a lista de seguidores
             {
                 //Imprimir os elementos da sub-lista
                 printf(", %s", percorre_lista->nomePessoa);
                 percorre_lista = percorre_lista->prox;
             }
-
+        }
         aux = aux->prox;
         printf("\n");
     }
@@ -112,7 +113,7 @@ void adiciona_vertice_ordenado(Grafo *gr, char nome[40])
 }
 
 //Função que adiciona a pessoa seguida na sub-lista da pessoa que segue
-void adiciona_relacao_entre_vertices(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQueESeguida[40])
+void adiciona_relacao(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQueESeguida[40])
 {
     //Cria as variáveis necessárias
     Vertice *aux2, *ant;
@@ -133,6 +134,7 @@ void adiciona_relacao_entre_vertices(Grafo *gr, char nomePessoaQueSegue[40], cha
             if(aux->segue == NULL) //Verificar se é a primeira inserção
             {
                 aux->segue = novo;
+                return;
             }
             else
             {
@@ -141,7 +143,7 @@ void adiciona_relacao_entre_vertices(Grafo *gr, char nomePessoaQueSegue[40], cha
                 aux2 = aux->segue;
                 
                 //Percorre o vetor enquanto não encontrar o local apropriado
-                while( aux2->prox != NULL && strcmp(aux2->nomePessoa, nomePessoaQueESeguida) < 0)
+                while( aux2 != NULL && strcmp(aux2->nomePessoa, nomePessoaQueESeguida) < 0)
                 {
                     ant = aux2;
                     aux2 = aux2->prox;
@@ -159,6 +161,8 @@ void adiciona_relacao_entre_vertices(Grafo *gr, char nomePessoaQueSegue[40], cha
                     aux->segue = novo;
                     novo->prox = aux2;
                 }
+
+                return;
             }
         }
         else

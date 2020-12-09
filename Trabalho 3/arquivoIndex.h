@@ -19,4 +19,4 @@ void ordena_index(IndexPessoa *index, int num_pessoas);
 void escreve_index(FILE *index_bin, IndexPessoa *index, int num_pessoas);
 
 //Função que realiza uma busca binária no índice primário pelo RRN correspondente ao ID buscado
-int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa, int modo);
+int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa);

@@ -11,4 +11,4 @@
 void prepara_structPessoa(Pessoa *pAux);
 
 //Função que lê a Pessoa do arquvo cujo RRN é "RRN". Retorna uma estrutura com os dados da pessoa
-Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo);
+Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN);

@@ -28,11 +28,14 @@ void prepara_structPessoa(Pessoa *pAux)
 }
 
 //Função que lê a Pessoa do arquvo cujo RRN é "RRN". Retorna uma estrutura com os dados da pessoa
-Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo_entrada)
+Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN)
 {
     //Variáveis auxiliares
     Pessoa pAux;
     char str_lixo[65];
+
+    //Salvar a posição corrente no arquivo
+    long posicao = ftell(pessoas_bin);
     
     //Ler o registro de cabeçalho, que é lixo
     fseek(pessoas_bin, 0, SEEK_SET);
@@ -45,9 +48,6 @@ Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo_entrada)
     fread(&pAux.removido, sizeof(char), 1, pessoas_bin);
     if(pAux.removido == '0')
     {
-        //Apenas no modo 3 deve-se imprimir uma mensagem de erro
-        if(modo_entrada == 3)
-            printf("Registro inexistente.");
         pAux.idPessoa = -1;
     }
     else
@@ -72,7 +72,7 @@ Pessoa busca_RRN_pessoa(FILE *pessoas_bin, int RRN, int modo_entrada)
     }
 
     //Volta o ponteiro para o início
-    fseek(pessoas_bin, 0, SEEK_SET);
+    fseek(pessoas_bin, posicao, SEEK_SET);
 
     return pAux;
 }

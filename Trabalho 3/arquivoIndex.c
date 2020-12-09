@@ -78,7 +78,7 @@ void escreve_index(FILE *index_bin, IndexPessoa *index, int num_pessoas)
 }
 
 //Função que realiza uma busca binária no índice primário pelo RRN correspondente ao ID buscado
-int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa, int modo_entrada)
+int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa)
 {
     //Algoritmo da busca binária
     int inf = 0;
@@ -96,9 +96,6 @@ int busca_binaria_index(IndexPessoa *index, int num_pessoas, int idPessoa, int m
         else
             inf = meio+1;
     }
-
-    //Apenas no modo 3 deve-se imprimir uma mensagem de erro
-    if(modo_entrada == 3)
-        printf("Registro inexistente.");
+    
     return -1;
 }

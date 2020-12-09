@@ -15,7 +15,7 @@ Grafo* cria_grafo(int n);
 void libera_grafo(Grafo *gr);
 
 //Função que adiciona a pessoa seguida na sub-lista da pessoa que segue
-void adiciona_relacao_entre_vertices(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQueESeguida[40]);
+void adiciona_relacao(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQueESeguida[40]);
 
 //Função que adiciona um vértice no gráfico, uma pessoa no vetor de de pessoas
 void adiciona_vertice_ordenado(Grafo *gr, char nome[40]);

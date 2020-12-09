@@ -2,13 +2,14 @@
 
 /* Arquivo principal do trabalho, a partir do qual será ativada as funcionalidades*/
 #include"main.h"
+#include"modo9.h"
 #include<stdio.h>
 #include<stdlib.h>
 
 /*** As funções abaixo são usadas por 2 ou mais modos diferentes  ***/
 
 // Função que abre um arquivo com o "nome" e o "modo". Retorna um ponteiro para esse arquivo
-FILE* le_arquivo(char *nome, char *modo, int modo_entrada)
+FILE* le_arquivo(char *nome, char *modo)
 {
     FILE *arq;
 
@@ -16,19 +17,15 @@ FILE* le_arquivo(char *nome, char *modo, int modo_entrada)
 
     if(arq == NULL)
     {
-        //A entrada 1 possui uma mensagem de erro diferente para o mesmo erro
-        if(modo_entrada == 1)
-            printf("Falha no carregamento do arquivo.");
-        else
-            printf("Falha no processamento do arquivo.");
-        return NULL;
+        printf("Falha na execução da funcionalidade.");
+        return 0;
     }
 
     return arq;
 }
 
 // Função que verifica se o cabeçalho está consistente
-int teste_consistencia_cabecalho(FILE *arq, int modo_entrada)
+int teste_consistencia_cabecalho(FILE *arq)
 {
     /***** Ler o registro de cabeçalho *******/
     char status;
@@ -38,11 +35,8 @@ int teste_consistencia_cabecalho(FILE *arq, int modo_entrada)
     fseek(arq, 0, SEEK_SET); 
 
     if(status == '0')
-    {   
-        if(modo_entrada == 7)
-            printf("Falha no carregamento do arquivo.");
-        else if(modo_entrada == 8)
-            printf("Falha no processamento do arquivo.");
+    {    
+        printf("Falha na execução da funcionalidade.");
         return 0;
     }
     else
@@ -54,6 +48,15 @@ int main()
     int modo;
 
     scanf("%d", &modo);
+
+    switch (modo)
+    {
+        case 9: modo9();
+                break;
+
+        default: printf("Não implementado ainda");
+                break;
+    }
 
     return 0;
 }

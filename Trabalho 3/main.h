@@ -50,7 +50,7 @@ typedef struct grafo {
 /********** Funções de uso geral que não pertecem à modos *********/
 
 //Função que abre um arquivo com o "nome" e o"modo". Retorna um ponteiro para esse arquivo
-FILE* le_arquivo(char *nome, char *modo, int modo_entrada);
+FILE* le_arquivo(char *nome, char *modo);
 
 //Função que verifica se o cabeçalho está consistente
-int teste_consistencia_cabecalho(FILE *arq, int modo_entrada);
+int teste_consistencia_cabecalho(FILE *arq);
