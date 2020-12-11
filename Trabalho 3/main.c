@@ -3,6 +3,7 @@
 /* Arquivo principal do trabalho, a partir do qual será ativada as funcionalidades*/
 #include"main.h"
 #include"modo9.h"
+#include"modo10.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -53,6 +54,9 @@ int main()
     {
         case 9: modo9();
                 break;
+
+        case 10: modo10();
+                 break;
 
         default: printf("Não implementado ainda");
                 break;

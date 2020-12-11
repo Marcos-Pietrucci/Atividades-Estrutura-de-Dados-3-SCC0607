@@ -1,16 +1,18 @@
 /* Marcos Vinícius Firmino Pietrucci 10770072*/
-#include"modo9.h"
+
+#include"modo10.h"
 #include"grafo.h"
 #include"arquivoIndex.h"
-#include"arquivoSegue.h"
 #include"arquivoPessoa.h"
+#include"arquivoSegue.h"
 
-//Função que inicia o modo 9
-void modo9()
+
+//Função que inicia o modo 10
+void modo10()
 {
     //Continuar com a leitura
     char nome_arq_pessoa[30], nome_arq_index[30], nome_arq_segue[30];
-    le_entradas_modo9(nome_arq_pessoa, nome_arq_index, nome_arq_segue);
+    le_entradas_modo10(nome_arq_pessoa, nome_arq_index, nome_arq_segue);
 
     //Abrir os arquivos necessários
     FILE *arq_pessoa = le_arquivo(nome_arq_pessoa, "rb");
@@ -39,19 +41,24 @@ void modo9()
     //Lê o arquivo pessoas e gera um grafo
     leitura_arq_pessoa_gera_grafo(gr, arq_pessoa, index, vetSegue, num_segue);
 
-    //Apresentar resultado
-    imprime_grafo(gr);
+    //Transpor o grafo lido
+    Grafo *gr_t = transpoe_grafo(gr);
 
+    //Apresentar resultado
+    imprime_grafo(gr_t);
+
+    //Libera todos os itens alocados
+    libera_grafo(gr);
+    libera_grafo(gr_t);
     fclose(arq_pessoa);
     fclose(arq_index);
     fclose(arq_segue);
     free(index);
     free(vetSegue);
-    libera_grafo(gr);
 }
 
-//Função que lê as entradas do modo 9
-void le_entradas_modo9(char *nome_arq_pessoa, char *nome_arq_index, char *nome_arq_segue)
+//Função que lê as entradas do modo 10
+void le_entradas_modo10(char *nome_arq_pessoa, char *nome_arq_index, char *nome_arq_segue)
 {
     char lixo;
     scanf("%c", &lixo);
