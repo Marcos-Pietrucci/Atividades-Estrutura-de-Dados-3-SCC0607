@@ -10,18 +10,6 @@
 #include"arquivoPessoa.h"
 #include"arquivoSegue.h"
 
-/* Estrutura do grafo */
-typedef struct no {
-  char nomePessoa[40];
-  int visitado;
-  struct no* segue;
-  struct no* prox;
-}Vertice;
-
-typedef struct grafo {
-    int n;      /* Número de nós */
-    Vertice** lista;
-}Grafo;
 
 /******** Funções referentes ao grafo *********/
 //Função que cria um grafo e retorna um ponteiro para ele

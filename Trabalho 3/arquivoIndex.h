@@ -7,11 +7,6 @@
 #include<stdlib.h>
 #endif
 
-//Nodo do index
-typedef struct {
-    int idPessoa;
-    int RRN;
-}IndexPessoa;
 
 /******** Funções referentes ao arquivo Index *********/
 //Função que lê um vetor de IndexPesoa do disco. Carrega estes dados num vetor

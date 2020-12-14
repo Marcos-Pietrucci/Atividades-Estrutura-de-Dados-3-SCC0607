@@ -7,16 +7,6 @@
 #include<stdlib.h>
 #endif
 
-//Nodo do segue
-typedef struct {
-    char removido;
-    int idPessoaQueSegue;
-    int idPessoaQueESeguida;
-    char grauAmizade[3];
-    char dataInicioQueSegue[11];
-    char dataFimQueSegue[11];
-}Segue;
-
 /******** Funções referentes ao arquivo segue *********/
 
 //Função que lê o arquivo binário "Segue" e retorna um vetor com todos os dados
