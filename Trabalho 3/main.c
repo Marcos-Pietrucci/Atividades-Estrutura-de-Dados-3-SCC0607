@@ -4,6 +4,7 @@
 #include"main.h"
 #include"modo9.h"
 #include"modo10.h"
+#include"modo11.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -56,6 +57,9 @@ int main()
                 break;
 
         case 10: modo10();
+                 break;
+
+        case 11: modo11();
                  break;
 
         default: printf("Não implementado ainda");

@@ -1,4 +1,7 @@
+/* Marcos Vinícius Firmino Pietrucci 10770072*/
+
 #include"grafo.h"
+#include"queue.h"
 
 /************************ Funções do grafo ***************************/
 //Função que cria um grafo e retorna um ponteiro para ele
@@ -9,8 +12,8 @@ Grafo* cria_grafo(int n)
     //Alocar gr
     gr = (Grafo *) malloc(sizeof(Grafo));
     
-    //Cria um vetor de ponteiros de vértices
-    gr->lista = (Vertice**) calloc(n, sizeof(Vertice*));
+    //Cria o início da lista
+    gr->lista = (Vertice**) calloc(1, sizeof(Vertice*));
     gr->n = n;
 
     return gr;
@@ -82,6 +85,7 @@ void adiciona_vertice_ordenado(Grafo *gr, char nome[40])
     //Adicionar informações ao novo nó
     novo->prox = NULL;
     novo->segue = NULL;
+    novo->visitado = 0;
     strcpy(novo->nomePessoa, nome);
 
     //Verificar se é a primeira inserção
@@ -238,6 +242,7 @@ void leitura_arq_pessoa_gera_grafo(Grafo *gr, FILE *arq_pessoa, IndexPessoa *ind
     }
 }
 
+//Função que transpoe um grafo
 Grafo* transpoe_grafo(Grafo *gr)
 {
     //Variáveis auxiliares
@@ -273,4 +278,104 @@ Grafo* transpoe_grafo(Grafo *gr)
     }
 
     return gr_t;
+}
+
+//Função que retorna o índice de um vértice dado seu nome
+int get_indc_vertice(Grafo *gr_t, char *nomeAux)
+{   
+    int i;
+    Vertice *aux = *(gr_t->lista);
+    
+    for(i = 0 ; i < gr_t->n ; i++)
+    {
+        if(strcmp(nomeAux, aux->nomePessoa) == 0)
+        {
+            //Encontrou o indice
+            return i;
+        }
+
+        aux = aux->prox;
+    }
+
+    return -1;
+}
+
+//Função que retorna um vértice dado seu índice
+Vertice* get_vertice_de_indice(Grafo *gr_t, int indc)
+{
+    Vertice* aux = *(gr_t->lista);
+
+    int i;
+    for(i = 0; i < indc; i++)
+    {
+        aux = aux->prox;
+    }
+
+    return aux;
+}
+
+//Função que executa uma busca em largura
+int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
+{
+    //Cria o vetor de antecessores
+    int *vetAnt = calloc(gr_t->n, sizeof(int));
+    int i;
+
+    for(i  = 0; i < gr_t->n; i++)
+        vetAnt[i] = -1;
+
+
+    //Criar fila
+    QUEUE *fila = Q_New(sizeof(int));
+
+    //Cria variaveis auxiliares
+    Vertice *aux = *(gr_t->lista);
+    Vertice *aux_2;
+    Vertice *aux_original;
+
+    int indc_inicio = 0, indc_aux = 0;
+
+    for(i = 0 ; i < gr_t->n ; i++)
+    {
+        //Marcar todos os nós como não_visitados
+        aux->visitado = 0;
+
+        if(strcmp(aux->nomePessoa, nomeCelebridade) == 0)
+        {
+            //Encontrei o vertice inicial
+            indc_inicio = i;
+            Q_Push( &indc_inicio, fila);
+        }
+
+        aux = aux->prox;
+    }
+    
+    vetAnt[indc_inicio] = -1;
+
+    //Iniciar a busca em largura
+    while(Q_Size(fila) != 0)
+    {
+        Q_Shift(&indc_aux, fila);
+
+        aux = get_vertice_de_indice(gr_t, indc_aux);
+        aux_original = aux;
+
+        for(aux = aux->segue; aux != NULL ; aux = aux->prox)
+        {   
+            indc_aux = get_indc_vertice(gr_t, aux->nomePessoa);
+            aux_2 = get_vertice_de_indice(gr_t, indc_aux);
+
+            if(aux_2->visitado == 0)
+            {
+                Q_Push(&indc_aux, fila);
+                vetAnt[indc_aux] = get_indc_vertice(gr_t, aux_original->nomePessoa);
+                aux_2->visitado = 1;
+            }
+            
+        }
+    }
+
+    Q_Destroy(fila);
+    vetAnt[indc_inicio] = -1;
+    return vetAnt;
 }
