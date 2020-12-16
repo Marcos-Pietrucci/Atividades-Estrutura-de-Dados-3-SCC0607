@@ -5,6 +5,18 @@
 #include<stdlib.h>
 #endif
 
+#ifndef PESSOA
+#define PESSOA
+//Nodo das pessoas
+typedef struct {
+    char removido;
+    int idPessoa;
+    char nomePessoa[40];
+    int idadePessoa;
+    char twitterPessoa[15];
+}Pessoa;
+#endif
+
 /******** Funções referentes ao arquivo Pessoa *********/
 
 //Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários e adicionando 'removido'

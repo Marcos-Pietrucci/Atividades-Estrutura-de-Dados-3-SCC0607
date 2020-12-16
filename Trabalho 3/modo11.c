@@ -7,7 +7,7 @@
 #include"arquivoPessoa.h"
 #include"arquivoSegue.h"
 
-
+//Função que organiza e executa o modo 11
 void modo11()
 {
     //Continuar com a leitura
@@ -27,27 +27,46 @@ void modo11()
     if(arq_segue == NULL || !teste_consistencia_cabecalho(arq_segue))
         return;
 
-    //Carregar na memória vetor de index
-    int num_pessoas;
-    IndexPessoa *index = le_index(arq_index, &num_pessoas);
-
-    //Carregar na memória vetor de Segue
-    int num_segue;
-    Segue *vetSegue = le_dados_arqSegue_BIN(arq_segue, &num_segue);
-
-    //Buscar pelas pessoas no arquivo pessoa
-    Grafo *gr = cria_grafo(num_pessoas);
-
     //Lê o arquivo pessoas e gera um grafo
-    leitura_arq_pessoa_gera_grafo(gr, arq_pessoa, index, vetSegue, num_segue);
+    Grafo *gr = leitura_arq_pessoa_gera_grafo(arq_pessoa, arq_index, arq_segue);
 
     //Transpor o grafo lido
     Grafo *gr_t = transpoe_grafo(gr);
 
+    //Apresentar resultado
+    imprime_grafo(gr_t);
+
     //Iniciar a busca em largura
     int *vetAntecessores = buscaLargura_Grafo(gr_t, nomeCelebridade);
 
-    //Imprimir todos os resultados
+    //Imprimir os resultados
+    imprime_modo11(gr_t, vetAntecessores, nomeCelebridade);
+
+    //Libera todos os itens alocados
+    libera_grafo(gr);
+    libera_grafo(gr_t);
+    fclose(arq_pessoa);
+    fclose(arq_index);
+    fclose(arq_segue);
+}
+
+//Função que lê as entradas do modo 11
+void le_entradas_modo11(char *nome_arq_pessoa, char *nome_arq_index, char * nome_arq_segue, char *nomeCelebridade)
+{
+    char lixo;
+    scanf("%c", &lixo);
+    scanf("%s", nome_arq_pessoa);
+    scanf("%c", &lixo);
+    scanf("%s", nome_arq_index);
+    scanf("%c", &lixo);
+    scanf("%s", nome_arq_segue);
+    scanf("%c", &lixo);
+    scan_quote_string(nomeCelebridade);
+}
+
+void imprime_modo11(Grafo *gr_t, int *vetAntecessores, char *nomeCelebridade)
+{
+     //Imprimir todos os resultados
     int indc = 0, i;
     Vertice *aux;    
     int indc_busca = get_indc_vertice(gr_t, nomeCelebridade);
@@ -91,28 +110,4 @@ void modo11()
         }
         printf("\n");
     }
-    
-
-    //Libera todos os itens alocados
-    libera_grafo(gr);
-    libera_grafo(gr_t);
-    fclose(arq_pessoa);
-    fclose(arq_index);
-    fclose(arq_segue);
-    free(index);
-    free(vetSegue);
-}
-
-//Função que lê as entradas do modo 11
-void le_entradas_modo11(char *nome_arq_pessoa, char *nome_arq_index, char * nome_arq_segue, char *nomeCelebridade)
-{
-    char lixo;
-    scanf("%c", &lixo);
-    scanf("%s", nome_arq_pessoa);
-    scanf("%c", &lixo);
-    scanf("%s", nome_arq_index);
-    scanf("%c", &lixo);
-    scanf("%s", nome_arq_segue);
-    scanf("%c", &lixo);
-    scan_quote_string(nomeCelebridade);
 }

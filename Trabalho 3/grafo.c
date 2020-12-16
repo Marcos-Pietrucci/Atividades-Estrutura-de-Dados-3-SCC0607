@@ -2,6 +2,7 @@
 
 #include"grafo.h"
 #include"queue.h"
+#include"stack.h"
 
 /************************ Funções do grafo ***************************/
 //Função que cria um grafo e retorna um ponteiro para ele
@@ -178,14 +179,22 @@ void adiciona_relacao(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQue
 }
 
 //Função que lê um arquivo de pessoas e gera o grafo
-void leitura_arq_pessoa_gera_grafo(Grafo *gr, FILE *arq_pessoa, IndexPessoa *index, Segue *vetSegue, int num_segue)
+Grafo* leitura_arq_pessoa_gera_grafo(FILE *arq_pessoa, FILE *arq_index, FILE *arq_segue)
 {
-
     /* Variáveis axuliares */
     Pessoa pAux, pSegue;
     int indc_seguido = 0, RRN_seguido = 0;
     char str_lixo[65];
-    int num_pessoas = gr->n;
+    int num_pessoas, num_segue;
+
+    //Carregar na memória vetor de index
+    IndexPessoa *index = le_index(arq_index, &num_pessoas);
+
+    //Carregar na memória vetor de Segue
+    Segue *vetSegue = le_dados_arqSegue_BIN(arq_segue, &num_segue);
+
+    //Buscar pelas pessoas no arquivo pessoa
+    Grafo *gr = cria_grafo(num_pessoas);
 
     //Lê o registro de cabeçalho (que contém dados irrelevantes)
     fread(str_lixo, sizeof(char), 64, arq_pessoa);
@@ -238,8 +247,9 @@ void leitura_arq_pessoa_gera_grafo(Grafo *gr, FILE *arq_pessoa, IndexPessoa *ind
 
             indc_seguido++;
         }
-        
     }
+
+    return gr;
 }
 
 //Função que transpoe um grafo
@@ -321,9 +331,9 @@ int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
     int *vetAnt = calloc(gr_t->n, sizeof(int));
     int i;
 
+    //Zerar o vetor de antecessores
     for(i  = 0; i < gr_t->n; i++)
         vetAnt[i] = -1;
-
 
     //Criar fila
     QUEUE *fila = Q_New(sizeof(int));
@@ -357,11 +367,13 @@ int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
     {
         Q_Shift(&indc_aux, fila);
 
+        //Coletar o vertice atual da fila
         aux = get_vertice_de_indice(gr_t, indc_aux);
         aux_original = aux;
 
         for(aux = aux->segue; aux != NULL ; aux = aux->prox)
         {   
+            //Verificar as pessoas adjacentes
             indc_aux = get_indc_vertice(gr_t, aux->nomePessoa);
             aux_2 = get_vertice_de_indice(gr_t, indc_aux);
 
@@ -378,4 +390,73 @@ int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
     Q_Destroy(fila);
     vetAnt[indc_inicio] = -1;
     return vetAnt;
+}
+
+Vertice* get_seguidor_nao_visitado(Grafo *gr, Vertice *ini)
+{
+    int indc;
+    Vertice *aux = ini;
+    Vertice *aux2;
+
+    do
+    {
+        indc = get_indc_vertice(gr, aux->nomePessoa);
+        aux2 = get_vertice_de_indice(gr, indc);
+        if (aux2->visitado == 0)
+        {
+            aux2->visitado = 1;
+            return aux;
+        }
+        else
+            aux = aux->prox;
+    }while(aux != NULL);
+
+    return NULL;
+}
+
+int busca_em_profundidade(Grafo *gr, char *nomeProcura)
+{
+    /*Variáveis auxiliares*/
+    Vertice *aux, *aux2;
+    STACK *pilha = S_New(sizeof(int));      //Pilha de registros
+    int indc, flag_inicio = 1;
+    int contador = 0;
+    
+    //Adicionar a pessoa inicial na pilha
+    indc = get_indc_vertice(gr, nomeProcura);
+    S_Push(&indc, pilha);
+
+    do 
+    {
+        S_Pop(&indc, pilha);
+
+        aux = get_vertice_de_indice(gr, indc); 
+
+        if(strcmp(nomeProcura, aux->nomePessoa) == 0 && !flag_inicio)
+        {
+            S_Destroy(pilha);
+            return contador;
+        }
+        else
+        {
+            aux2 = get_seguidor_nao_visitado(gr, aux->segue);
+
+            if(aux2 != NULL)
+            {
+                contador++;
+                indc = get_indc_vertice(gr, aux2->nomePessoa);
+                S_Push(&indc, pilha);
+            }
+            else
+            {
+                contador--;
+            }
+            
+        }
+        
+        flag_inicio = 0;
+    }while(S_Size(pilha) != 0);
+
+    S_Destroy(pilha);
+    return -1;
 }

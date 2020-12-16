@@ -25,19 +25,8 @@ void modo9()
     if(arq_segue == NULL || !teste_consistencia_cabecalho(arq_segue))
         return;
 
-    //Carregar na memória vetor de index
-    int num_pessoas;
-    IndexPessoa *index = le_index(arq_index, &num_pessoas);
-
-    //Carregar na memória vetor de Segue
-    int num_segue;
-    Segue *vetSegue = le_dados_arqSegue_BIN(arq_segue, &num_segue);
-
-    //Buscar pelas pessoas no arquivo pessoa
-    Grafo *gr = cria_grafo(num_pessoas);
-
     //Lê o arquivo pessoas e gera um grafo
-    leitura_arq_pessoa_gera_grafo(gr, arq_pessoa, index, vetSegue, num_segue);
+    Grafo *gr = leitura_arq_pessoa_gera_grafo(arq_pessoa, arq_index, arq_segue);
 
     //Apresentar resultado
     imprime_grafo(gr);
@@ -45,8 +34,6 @@ void modo9()
     fclose(arq_pessoa);
     fclose(arq_index);
     fclose(arq_segue);
-    free(index);
-    free(vetSegue);
     libera_grafo(gr);
 }
 

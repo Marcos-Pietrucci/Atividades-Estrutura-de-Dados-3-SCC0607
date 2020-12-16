@@ -5,6 +5,7 @@
 #include"modo9.h"
 #include"modo10.h"
 #include"modo11.h"
+#include"modo12.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -62,8 +63,8 @@ int main()
         case 11: modo11();
                  break;
 
-        default: printf("Não implementado ainda");
-                break;
+        case 12: modo12();
+                 break;
     }
 
     return 0;

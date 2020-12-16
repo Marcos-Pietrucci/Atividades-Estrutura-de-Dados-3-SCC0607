@@ -10,6 +10,23 @@
 #include"arquivoPessoa.h"
 #include"arquivoSegue.h"
 
+#ifndef GRAFO
+#define GRAFO
+/* Estrutura do grafo */
+typedef struct no {
+  char nomePessoa[40];
+  int visitado;
+  struct no* segue;
+  struct no* prox;
+}Vertice;
+
+typedef struct grafo {
+    int n;      /* Número de nós */
+    Vertice** lista;
+}Grafo;
+
+#endif
+
 
 /******** Funções referentes ao grafo *********/
 //Função que cria um grafo e retorna um ponteiro para ele
@@ -25,7 +42,7 @@ void adiciona_relacao(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQue
 void adiciona_vertice_ordenado(Grafo *gr, char nome[40]);
 
 //Função que lê um arquivo de pessoas e gera o grafo
-void leitura_arq_pessoa_gera_grafo(Grafo *gr, FILE *arq_pessoa, IndexPessoa *index, Segue *vetSegue, int num_segue);
+Grafo* leitura_arq_pessoa_gera_grafo(FILE *arq_pessoa, FILE *arq_index, FILE *arq_segue);
 
 //Função que transpoe um grafo
 Grafo* transpoe_grafo(Grafo *gr);
@@ -41,3 +58,5 @@ Vertice* get_vertice_de_indice(Grafo *gr_t, int indc);
 
 //Função que retorna o índice de um vértice dado seu nome
 int get_indc_vertice(Grafo *gr_t, char *nomeAux);
+
+int busca_em_profundidade(Grafo *gr, char *nomeProcura);
