@@ -1,9 +1,10 @@
+/* Marcos Vinícus Firmino Pietrucci 10770072 */
+
+#include"header/fornecido.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-
-
 
 /*
 * Abaixo seguem funções que fazem a escrita do binário em "stdout" (tela) pra poder ser comparado no run.codes.
@@ -95,7 +96,7 @@ void trim(char *str) {
 
 
 
-void scan_quote_string(char *str) {
+void scan_quote_string(char *str, int len) {
 
 	/*
 	*	Use essa função para ler um campo string delimitado entre aspas (").
@@ -111,6 +112,7 @@ void scan_quote_string(char *str) {
 	*/
 
 	char R;
+	int indc = 0;
 
 	while((R = getchar()) != EOF && isspace(R)); // ignorar espaços, \r, \n...
 
@@ -118,10 +120,25 @@ void scan_quote_string(char *str) {
 		getchar(); getchar(); getchar(); // ignorar o "ULO" de NULO.
 		strcpy(str, ""); // copia string vazia
 	} else if(R == '\"') {
-		if(scanf("%[^\"]", str) != 1) { // ler até o fechamento das aspas
-			strcpy(str, "");
+		scanf("%c", &R);
+		while(R != '\"' && indc != len - 1) //Enquanto não ler uma aspas ou não ultrapassar o limite de tamanho 
+		{ // ler até o fechamento das aspas
+			str[indc] = R;
+			indc++;
+			if(indc == len)
+				break;
+
+			scanf("%c", &R);
 		}
-		getchar(); // ignorar aspas fechando
+		if(indc != len - 1)
+			str[indc] = '\0';
+		else
+			str[indc] = '\0';
+		
+		//Terminar de ler o lixo até as aspas
+		while(R != '\"')
+			scanf("%c", &R);
+		
 	} else if(R != EOF){ // vc tá tentando ler uma string que não tá entre aspas! Fazer leitura normal %s então...
 		*str = R;
 		str++;
@@ -134,5 +151,3 @@ void scan_quote_string(char *str) {
 		strcpy(str, "");
 	}
 }
-
-
