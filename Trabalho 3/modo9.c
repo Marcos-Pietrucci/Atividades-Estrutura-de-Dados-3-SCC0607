@@ -1,9 +1,7 @@
 /* Marcos Vinícius Firmino Pietrucci 10770072*/
+
 #include"modo9.h"
 #include"grafo.h"
-#include"arquivoIndex.h"
-#include"arquivoSegue.h"
-#include"arquivoPessoa.h"
 
 //Função que inicia o modo 9
 void modo9()
@@ -31,6 +29,7 @@ void modo9()
     //Apresentar resultado
     imprime_grafo(gr);
 
+    //Liberar os itens alocados
     fclose(arq_pessoa);
     fclose(arq_index);
     fclose(arq_segue);

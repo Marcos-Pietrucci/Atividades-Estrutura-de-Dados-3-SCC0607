@@ -1,3 +1,5 @@
+/* Marcos Vinícius Firmino Pietrucci 10770072*/
+
 #include"arquivoPessoa.h"
 
 //Função que prepara a struct para o padrão de escrita, adicionando os '$' necessários

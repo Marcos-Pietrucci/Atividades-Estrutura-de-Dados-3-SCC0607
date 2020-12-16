@@ -2,10 +2,6 @@
 
 #include"modo10.h"
 #include"grafo.h"
-#include"arquivoIndex.h"
-#include"arquivoPessoa.h"
-#include"arquivoSegue.h"
-
 
 //Função que inicia o modo 10
 void modo10()

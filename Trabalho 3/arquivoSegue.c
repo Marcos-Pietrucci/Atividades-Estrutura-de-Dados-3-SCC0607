@@ -1,3 +1,5 @@
+/* Marcos Vinícius Firmino Pietrucci 10770072*/
+
 #include"arquivoSegue.h"
 
 //Função que lê o arquivo binário "Segue" e retorna um vetor com todos os dados

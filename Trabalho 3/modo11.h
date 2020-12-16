@@ -14,4 +14,5 @@ void modo11();
 //Função que lê as entradas do modo 11
 void le_entradas_modo11(char *nome_arq_pessoa, char *nome_arq_index, char * nome_arq_segue, char *nomeCelebridade);
 
+//Função que imprime o grafo do modo 11
 void imprime_modo11(Grafo *gr_t, int *vetAntecessores, char *nomeCelebridade);

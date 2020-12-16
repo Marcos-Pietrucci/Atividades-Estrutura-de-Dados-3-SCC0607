@@ -1,3 +1,5 @@
+/* Marcos Vinícius Firmino Pietrucci 10770072*/
+
 #include"arquivoIndex.h"
 
 //Função que lê um vetor de IndexPesoa do disco. Carrega estes dados num vetor

@@ -21,8 +21,8 @@ typedef struct no {
 }Vertice;
 
 typedef struct grafo {
-    int n;      /* Número de nós */
-    Vertice** lista;
+    int n;            //Número de vértices
+    Vertice** lista;  //Lista de Lista
 }Grafo;
 
 #endif
@@ -34,20 +34,20 @@ Grafo* cria_grafo(int n);
 //Função que libera todo o grafo adequadamente
 void libera_grafo(Grafo *gr);
 
-//Função que adiciona a pessoa seguida na sub-lista da pessoa que segue
-void adiciona_relacao(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQueESeguida[40]);
+//Função que imprime o grafo conforme especificado
+void imprime_grafo(Grafo* gr);
 
 //Função que adiciona um vértice no gráfico, uma pessoa no vetor de de pessoas
 void adiciona_vertice_ordenado(Grafo *gr, char nome[40]);
+
+//Função que adiciona a pessoa seguida na sub-lista da pessoa que segue
+void adiciona_relacao(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQueESeguida[40]);
 
 //Função que lê um arquivo de pessoas e gera o grafo
 Grafo* leitura_arq_pessoa_gera_grafo(FILE *arq_pessoa, FILE *arq_index, FILE *arq_segue);
 
 //Função que transpoe um grafo
 Grafo* transpoe_grafo(Grafo *gr);
-
-//Função que imprime o grafo conforme especificado
-void imprime_grafo(Grafo* gr);
 
 //Função que executa uma busca em largura
 int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade);

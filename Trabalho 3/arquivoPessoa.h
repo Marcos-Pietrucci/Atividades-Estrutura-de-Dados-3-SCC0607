@@ -1,3 +1,5 @@
+/* Marcos Vinícius Firmino Pietrucci 10770072*/
+
 #ifndef MAIN_H
 #include"main.h"
 #endif

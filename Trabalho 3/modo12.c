@@ -3,9 +3,6 @@
 #include"modo12.h"
 #include"fornecido.h"
 #include"grafo.h"
-#include"arquivoIndex.h"
-#include"arquivoPessoa.h"
-#include"arquivoSegue.h"
 
 void modo12()
 {
@@ -32,15 +29,12 @@ void modo12()
     //Iniciar a busca em profundidade
     int val = busca_em_profundidade(gr,nomeCelebridade);
 
+    //Exibir o resultado
     if(val == -1)
         printf("A FOFOCA NAO RETORNOU\n");
     else
-    {
         printf("%d\n", val);
-    }
     
-    
-
     //Libera todos os itens alocados
     libera_grafo(gr);
     fclose(arq_pessoa);

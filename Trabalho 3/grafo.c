@@ -127,9 +127,11 @@ void adiciona_relacao(Grafo *gr, char nomePessoaQueSegue[40], char nomePessoaQue
     Vertice *inicio = *(gr->lista);
     Vertice *novo = (Vertice *) malloc(sizeof(Vertice));
 
+    //Adiciona os atributos necessários
     strcpy(novo->nomePessoa, nomePessoaQueESeguida);
     novo->segue = NULL;
     novo->prox = NULL;
+    novo->visitado = 0;
 
     //Percorrer o vetor de pessoas
     while(inicio != NULL)
@@ -295,40 +297,6 @@ Grafo* transpoe_grafo(Grafo *gr)
     return gr_t;
 }
 
-//Função que retorna o índice de um vértice dado seu nome
-int get_indc_vertice(Grafo *gr_t, char *nomeAux)
-{   
-    int i;
-    Vertice *aux = *(gr_t->lista);
-    
-    for(i = 0 ; i < gr_t->n ; i++)
-    {
-        if(strcmp(nomeAux, aux->nomePessoa) == 0)
-        {
-            //Encontrou o indice
-            return i;
-        }
-
-        aux = aux->prox;
-    }
-
-    return -1;
-}
-
-//Função que retorna um vértice dado seu índice
-Vertice* get_vertice_de_indice(Grafo *gr_t, int indc)
-{
-    Vertice* aux = *(gr_t->lista);
-
-    int i;
-    for(i = 0; i < indc; i++)
-    {
-        aux = aux->prox;
-    }
-
-    return aux;
-}
-
 //Função que executa uma busca em largura
 int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
 {
@@ -336,7 +304,7 @@ int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
     Vertice *aux = *(gr_t->lista);
     Vertice *aux_2;
     Vertice *aux_original;
-    int indc_inicio = 0, indc_aux = 0;
+    int indc_aux = 0;
 
     //Cria o vetor de antecessores
     int *vetAnt = calloc(gr_t->n, sizeof(int));
@@ -350,11 +318,15 @@ int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
     QUEUE *fila = Q_New(sizeof(int));
 
     //Receber o indice do início da  busca
-    indc_inicio = get_indc_vertice(gr_t, nomeCelebridade);
+    indc_aux = get_indc_vertice(gr_t, nomeCelebridade);
+
+    //Adiciona o índice do inicio
+    Q_Push(&indc_aux, fila);
     
     //Iniciar a busca em largura
     while(Q_Size(fila) != 0)
     {
+        //Desenvileira o índice do vértice a ser investigado
         Q_Shift(&indc_aux, fila);
 
         //Coletar o vertice atual da fila
@@ -370,6 +342,7 @@ int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
 
             if(aux_2->visitado == 0)
             {
+                //Se não tiver sido visitado
                 Q_Push(&indc_aux, fila); //Adicionar na pilha
                 vetAnt[indc_aux] = get_indc_vertice(gr_t, aux_original->nomePessoa); //Adiciona o "caminho" no vetor de antecessores
                 aux_2->visitado = 1;
@@ -378,9 +351,50 @@ int* buscaLargura_Grafo(Grafo *gr_t, char *nomeCelebridade)
         }
     }
     
+    //Adicionar condição de parada
+    vetAnt[get_indc_vertice(gr_t, nomeCelebridade)] = -1;
+
     //Desaloca a fila
     Q_Destroy(fila);
     return vetAnt;
+}
+
+//Função que retorna um vértice dado seu índice
+Vertice* get_vertice_de_indice(Grafo *gr_t, int indc)
+{
+    //Variáveis auxiliares
+    Vertice* aux = *(gr_t->lista);
+    int i;
+
+    //Varre a lista principal
+    for(i = 0; i < indc; i++)
+    {
+        aux = aux->prox;
+    }
+
+    return aux;
+}
+
+//Função que retorna o índice de um vértice dado seu nome
+int get_indc_vertice(Grafo *gr_t, char *nomeAux)
+{   
+    //Variáveis auxiliares
+    int i;
+    Vertice *aux = *(gr_t->lista);
+
+    //Varrer a lista principal
+    for(i = 0 ; i < gr_t->n ; i++)
+    {
+        if(strcmp(nomeAux, aux->nomePessoa) == 0)
+        {
+            //Encontrou o indice
+            return i;
+        }
+
+        aux = aux->prox;
+    }
+
+    return -1;
 }
 
 //Função que retorna, dos varios seguidos de um vertice, o mais "próximo" alfabeticamente
@@ -416,7 +430,7 @@ int busca_em_profundidade(Grafo *gr, char *nomeProcura)
 {
     /*Variáveis auxiliares*/
     Vertice *aux, *aux2;
-    STACK *pilha = S_New(sizeof(int));      //Pilha de índices de registros
+    STACK *pilha = S_New(sizeof(int)); //Pilha de índices de registros
     int indc, flag_inicio = 1;
     int contador = 0;
     
@@ -444,7 +458,6 @@ int busca_em_profundidade(Grafo *gr, char *nomeProcura)
 
             //Recebe o seguidor mais pŕoximo alfabeticamente
             aux2 = get_seguidor_nao_visitado(gr, aux->segue);
-
             
             if(aux2 != NULL)
             {

@@ -3,9 +3,6 @@
 #include"modo11.h"
 #include"fornecido.h"
 #include"grafo.h"
-#include"arquivoIndex.h"
-#include"arquivoPessoa.h"
-#include"arquivoSegue.h"
 
 //Função que organiza e executa o modo 11
 void modo11()
@@ -32,9 +29,6 @@ void modo11()
 
     //Transpor o grafo lido
     Grafo *gr_t = transpoe_grafo(gr);
-
-    //Apresentar resultado
-    imprime_grafo(gr_t);
 
     //Iniciar a busca em largura
     int *vetAntecessores = buscaLargura_Grafo(gr_t, nomeCelebridade);
@@ -64,9 +58,10 @@ void le_entradas_modo11(char *nome_arq_pessoa, char *nome_arq_index, char * nome
     scan_quote_string(nomeCelebridade);
 }
 
+//Função que imprime o grafo do modo 11
 void imprime_modo11(Grafo *gr_t, int *vetAntecessores, char *nomeCelebridade)
 {
-     //Imprimir todos os resultados
+    //Imprimir todos os resultados
     int indc = 0, i;
     Vertice *aux;    
     int indc_busca = get_indc_vertice(gr_t, nomeCelebridade);
