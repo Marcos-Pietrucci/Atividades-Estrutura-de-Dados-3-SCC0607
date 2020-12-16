@@ -9,15 +9,12 @@
 
 #ifndef INDEX
 #define INDEX
-
 //Nodo do index
 typedef struct {
     int idPessoa;
     int RRN;
 }IndexPessoa;
-
 #endif
-
 
 /******** Funções referentes ao arquivo Index *********/
 //Função que lê um vetor de IndexPesoa do disco. Carrega estes dados num vetor

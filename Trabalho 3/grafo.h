@@ -59,4 +59,5 @@ Vertice* get_vertice_de_indice(Grafo *gr_t, int indc);
 //Função que retorna o índice de um vértice dado seu nome
 int get_indc_vertice(Grafo *gr_t, char *nomeAux);
 
+//Função que procura ciclos por meio de uma busca em profundidade
 int busca_em_profundidade(Grafo *gr, char *nomeProcura);

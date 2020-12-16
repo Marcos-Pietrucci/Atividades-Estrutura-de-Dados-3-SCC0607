@@ -33,7 +33,7 @@ void libera_grafo(Grafo *gr)
     {   
         percorre_lista = inicio->segue;
         if(percorre_lista != NULL)
-            while(percorre_lista->prox != NULL) //Percorrer a lista de seguidores
+            while(percorre_lista != NULL) //Percorrer a lista de seguidores
             {
                 aux = percorre_lista;
                 percorre_lista = percorre_lista->prox;
@@ -46,6 +46,7 @@ void libera_grafo(Grafo *gr)
     }
 
     free(gr->lista);
+    free(gr);
 }
 
 //Função que imprime o grafo conforme especificado
@@ -248,6 +249,10 @@ Grafo* leitura_arq_pessoa_gera_grafo(FILE *arq_pessoa, FILE *arq_index, FILE *ar
             indc_seguido++;
         }
     }
+
+    //Liberar as listas alocadas
+    free(index);
+    free(vetSegue);
 
     return gr;
 }
